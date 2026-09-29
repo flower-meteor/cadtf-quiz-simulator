@@ -1,0 +1,4182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026英语组“四新”专项赛省赛在线问答模拟</title>
+  <meta name="theme-color" content="#17365d">
+  <meta name="description" content="支持录音、语音转写、标准答案评分和 PDF 分析报告的在线问答模拟系统。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="问答模拟">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --navy: #17365d;
+      --navy-2: #254f76;
+      --teal: #177d78;
+      --teal-soft: #e8f5f3;
+      --amber: #b66a12;
+      --amber-soft: #fff4df;
+      --red: #b43b3b;
+      --red-soft: #fff0f0;
+      --ink: #17232e;
+      --muted: #667586;
+      --line: #d8e1ea;
+      --line-strong: #b8c7d6;
+      --surface: #ffffff;
+      --surface-2: #f4f7fb;
+      --surface-3: #eaf1f7;
+      --shadow: 0 8px 24px rgba(23, 54, 93, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--surface-2);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      background:
+        linear-gradient(#eef3f8, #eef3f8) top left / 100% 142px no-repeat,
+        var(--surface-2);
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.52;
+    }
+
+    .topbar {
+      min-height: 76px;
+      color: #fff;
+      background: var(--navy);
+      border-bottom: 3px solid var(--teal);
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 32px));
+      min-height: 76px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-mark svg {
+      width: 23px;
+      height: 23px;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-copy strong,
+    .brand-copy span {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-copy strong {
+      font-size: 16px;
+    }
+
+    .brand-copy span {
+      margin-top: 2px;
+      font-size: 12px;
+      color: #c9d8e6;
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .status-chip {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      color: #eef7ff;
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .status-chip svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .app-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 20px auto 42px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 46px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+
+    .nav button {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 13px;
+      border: 0;
+      border-radius: 6px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav button:hover {
+      color: var(--navy);
+      background: var(--surface-3);
+    }
+
+    .nav button.active {
+      color: #fff;
+      background: var(--navy);
+    }
+
+    .nav svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .view {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin: 0 0 14px;
+    }
+
+    .page-heading h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+      color: var(--navy);
+    }
+
+    .page-heading p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .btn {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 15px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      font-weight: 800;
+      color: #fff;
+      background: var(--navy);
+      transition: 140ms ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(23, 54, 93, 0.18);
+    }
+
+    .btn.secondary {
+      color: var(--navy);
+      border-color: var(--line-strong);
+      background: #fff;
+    }
+
+    .btn.teal {
+      background: var(--teal);
+    }
+
+    .btn.danger {
+      background: var(--red);
+    }
+
+    .btn.ghost {
+      color: var(--muted);
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .btn svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .panel-head strong {
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .panel-body {
+      padding: 18px;
+    }
+
+    .entry-hero {
+      padding: 22px;
+      background:
+        linear-gradient(90deg, var(--navy) 0, var(--navy) 5px, #fff 5px, #fff 100%);
+    }
+
+    .entry-hero h2 {
+      margin: 0 0 7px;
+      color: var(--navy);
+      font-size: 21px;
+      letter-spacing: 0;
+    }
+
+    .entry-hero p {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .flow-step {
+      min-height: 112px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .flow-step .step-no {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 9px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .flow-step strong {
+      display: block;
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .flow-step span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .roster {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(23, 125, 120, 0.12);
+    }
+
+    .notice {
+      display: flex;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid #f0d7a8;
+      border-radius: var(--radius);
+      color: #704b16;
+      background: var(--amber-soft);
+      font-size: 13px;
+    }
+
+    .notice svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      margin-top: 2px;
+    }
+
+    .exam-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap: 18px;
+    }
+
+    .exam-main,
+    .exam-side {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .exam-main {
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exam-main-head {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 17px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .exam-main-head strong {
+      color: var(--navy);
+    }
+
+    .question-count {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .exam-content {
+      flex: 1;
+      padding: 23px;
+    }
+
+    .phase-label {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      color: var(--teal);
+      background: var(--teal-soft);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .phase-label.answer {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .phase-label svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .question-en {
+      margin: 20px 0 14px;
+      color: var(--navy);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(25px, 3.25vw, 38px);
+      font-weight: 700;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .question-zh {
+      margin: 0;
+      padding-left: 14px;
+      border-left: 3px solid var(--teal);
+      color: #415466;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .answer-area {
+      margin-top: 24px;
+    }
+
+    .member-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .member-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .member-chip {
+      min-height: 36px;
+      padding: 7px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      color: var(--navy);
+      background: #fff;
+      font-weight: 800;
+    }
+
+    .member-chip.active {
+      color: #fff;
+      border-color: var(--teal);
+      background: var(--teal);
+    }
+
+    .exam-side {
+      padding: 17px;
+      position: sticky;
+      top: 14px;
+    }
+
+    .side-title {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .timer {
+      width: 176px;
+      height: 176px;
+      display: grid;
+      place-items: center;
+      margin: 8px auto 17px;
+      border: 8px solid var(--surface-3);
+      border-radius: 50%;
+      position: relative;
+      background: #fff;
+    }
+
+    .timer::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border: 8px solid transparent;
+      border-top-color: var(--teal);
+      border-right-color: var(--teal);
+      border-radius: 50%;
+      transform: rotate(25deg);
+    }
+
+    .timer.answer::before {
+      border-top-color: var(--red);
+      border-right-color: var(--red);
+    }
+
+    .timer-inner {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timer-value {
+      display: block;
+      color: var(--navy);
+      font-size: 35px;
+      font-weight: 900;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-label {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .record-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 17px;
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .record-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 0 rgba(180, 59, 59, 0.38);
+      animation: pulse 1.25s infinite;
+    }
+
+    @keyframes pulse {
+      70% {
+        box-shadow: 0 0 0 9px rgba(180, 59, 59, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(180, 59, 59, 0);
+      }
+    }
+
+    .side-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .side-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .side-list strong {
+      color: var(--ink);
+      text-align: right;
+    }
+
+    .progress-track {
+      height: 8px;
+      margin: 16px 0 8px;
+      border-radius: 999px;
+      background: var(--surface-3);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--teal);
+      transition: width 180ms ease;
+    }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .exam-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 17px;
+      border-top: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .speed-control {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .speed-control select {
+      min-height: 32px;
+      padding: 4px 8px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      color: var(--navy);
+      background: #fff;
+    }
+
+    .upload-state {
+      min-height: 490px;
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .upload-state h2 {
+      margin: 16px 0 5px;
+      color: var(--navy);
+    }
+
+    .upload-state p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .upload-icon {
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+      border-radius: 50%;
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .upload-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .analysis-layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .score-panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      text-align: center;
+    }
+
+    .score-circle {
+      width: 146px;
+      height: 146px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 13px;
+      border: 10px solid var(--surface-3);
+      border-top-color: var(--teal);
+      border-right-color: var(--teal);
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .score-circle strong {
+      display: block;
+      color: var(--navy);
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    .score-circle span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .analysis-main {
+      min-width: 0;
+    }
+
+    .analysis-block {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .analysis-block + .analysis-block {
+      margin-top: 12px;
+    }
+
+    .analysis-block h3 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 15px;
+    }
+
+    .metric-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr) 42px;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .metric-track {
+      height: 8px;
+      border-radius: 999px;
+      background: var(--surface-3);
+      overflow: hidden;
+    }
+
+    .metric-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--teal);
+    }
+
+    .metric-row strong {
+      color: var(--navy);
+      text-align: right;
+    }
+
+    .analysis-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .analysis-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #405365;
+      font-size: 13px;
+    }
+
+    .analysis-list li + li {
+      margin-top: 6px;
+    }
+
+    .keyword-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .keyword-chip {
+      padding: 4px 8px;
+      border-radius: 5px;
+      color: var(--navy);
+      background: var(--surface-3);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .keyword-chip.covered {
+      color: #0c655d;
+      background: var(--teal-soft);
+    }
+
+    .transcript-box {
+      width: 100%;
+      min-height: 126px;
+      resize: vertical;
+      padding: 11px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      line-height: 1.65;
+    }
+
+    .transcript-box:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(23, 125, 120, 0.12);
+    }
+
+    .audio-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .audio-row audio {
+      min-width: 240px;
+      flex: 1;
+      height: 34px;
+    }
+
+    .live-transcript {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfdff;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .live-transcript svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 17px;
+      color: var(--teal);
+    }
+
+    .live-transcript strong {
+      color: var(--navy);
+    }
+
+    .summary-score {
+      color: var(--teal);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .summary-audio {
+      display: block;
+      width: min(310px, 100%);
+      margin-top: 10px;
+      height: 32px;
+    }
+
+    .summary-analysis {
+      margin-top: 9px;
+      color: #405365;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .history-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .history-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .history-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 15px 17px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .history-title {
+      color: var(--navy);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .history-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .history-score {
+      color: var(--teal);
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1;
+      text-align: right;
+    }
+
+    .history-body {
+      display: grid;
+      gap: 12px;
+      padding: 15px 17px 17px;
+    }
+
+    .history-question {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+    }
+
+    .history-question h4 {
+      margin: 0 0 7px;
+      color: var(--navy);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .history-question p {
+      margin: 0;
+      color: #405365;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .history-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 17px 17px;
+    }
+
+    .empty-state {
+      padding: 50px 20px;
+      border: 1px dashed var(--line-strong);
+      border-radius: var(--radius);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+
+    .empty-state svg {
+      width: 34px;
+      height: 34px;
+      color: var(--teal);
+    }
+
+    .save-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .save-state svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .info-item {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+    }
+
+    .info-item strong {
+      display: block;
+      color: var(--navy);
+      font-size: 13px;
+    }
+
+    .info-item select {
+      width: 100%;
+      min-height: 38px;
+      margin-top: 9px;
+      padding: 7px 9px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .summary-hero {
+      padding: 22px;
+      color: #fff;
+      background: var(--navy);
+    }
+
+    .summary-hero h2 {
+      margin: 0 0 5px;
+      font-size: 24px;
+    }
+
+    .summary-hero p {
+      margin: 0;
+      color: #d8e6f2;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 11px;
+      padding: 18px;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .summary-no {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      color: #fff;
+      background: var(--teal);
+      font-weight: 900;
+    }
+
+    .summary-q {
+      color: var(--navy);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .summary-meta {
+      min-width: 90px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .bank-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .category-tabs button {
+      min-height: 34px;
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--muted);
+      background: #fff;
+      font-weight: 800;
+    }
+
+    .category-tabs button.active {
+      color: #fff;
+      border-color: var(--navy);
+      background: var(--navy);
+    }
+
+    .bank-count {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bank-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .question-card {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(23, 54, 93, 0.05);
+    }
+
+    .question-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .q-id {
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .q-category {
+      padding: 3px 7px;
+      border-radius: 5px;
+      color: #4b5e70;
+      background: var(--surface-3);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .question-card h3 {
+      margin: 0;
+      color: var(--navy);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 19px;
+      line-height: 1.35;
+    }
+
+    .question-card p {
+      margin: 9px 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .question-card .btn {
+      align-self: flex-start;
+      margin-top: auto;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .rule-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .rule-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .rule-card h3 svg {
+      width: 19px;
+      height: 19px;
+      color: var(--teal);
+    }
+
+    .rule-card ul {
+      margin: 0;
+      padding-left: 19px;
+      color: #405365;
+      font-size: 13px;
+    }
+
+    .rule-card li + li {
+      margin-top: 7px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(8, 22, 36, 0.58);
+    }
+
+    .modal-backdrop.show {
+      display: grid;
+    }
+
+    .modal {
+      width: min(560px, 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+    }
+
+    .modal-head {
+      padding: 15px 17px;
+      border-bottom: 1px solid var(--line);
+      color: var(--navy);
+      font-weight: 900;
+    }
+
+    .modal-body {
+      padding: 17px;
+      color: #405365;
+      font-size: 14px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      padding: 13px 17px;
+      border-top: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+      .layout,
+      .exam-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .exam-side {
+        position: static;
+      }
+
+      .flow-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .bank-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner,
+      .app-shell {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        padding: 12px 0;
+        flex-direction: column;
+      }
+
+      .system-status {
+        justify-content: flex-start;
+      }
+
+      .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .flow-grid,
+      .roster,
+      .info-grid,
+      .rules-grid,
+      .analysis-layout,
+      .analysis-columns,
+      .history-head {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-row {
+        grid-template-columns: 85px minmax(0, 1fr) 36px;
+      }
+
+      .history-score {
+        text-align: left;
+      }
+
+      .exam-content {
+        padding: 17px;
+      }
+
+      .question-en {
+        font-size: 25px;
+      }
+
+      .exam-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .button-row .btn {
+        width: 100%;
+      }
+
+      .summary-row {
+        grid-template-columns: 38px minmax(0, 1fr);
+      }
+
+      .summary-meta {
+        grid-column: 2;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark"><i data-lucide="clipboard-check"></i></div>
+        <div class="brand-copy">
+          <strong>省赛在线问答模拟</strong>
+          <span>2026英语组“四新”专项赛</span>
+        </div>
+      </div>
+      <div class="system-status">
+        <span class="status-chip"><i data-lucide="video-off"></i>视频录制关闭</span>
+        <span class="status-chip"><i data-lucide="mic"></i>每题录音</span>
+        <span class="status-chip"><i data-lucide="chart-no-axes-column"></i>内容自动评分</span>
+        <span class="status-chip"><i data-lucide="timer"></i>正式计时流程</span>
+        <span class="status-chip"><i data-lucide="library"></i>题库 50 题</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <nav class="nav" aria-label="模拟系统导航">
+      <button class="active" data-view="exam"><i data-lucide="monitor-play"></i>模拟考试</button>
+      <button data-view="bank"><i data-lucide="library"></i>题库练习</button>
+      <button data-view="history"><i data-lucide="archive"></i>答题记录</button>
+      <button data-view="rules"><i data-lucide="circle-help"></i>考试规则</button>
+    </nav>
+
+    <section id="view-exam" class="view active">
+      <div class="page-heading">
+        <div>
+          <h1>在线问答模拟</h1>
+          <p>每题 60 秒准备，作答全程录音，结束后自动转写、评分并分析。</p>
+        </div>
+        <span class="status-chip" style="color: var(--navy); background: #fff; border-color: var(--line);">
+          <i data-lucide="badge-check"></i><span id="exam-mode-label">随机 2 题</span>
+        </span>
+      </div>
+
+      <div id="exam-entry" class="layout">
+        <div class="panel">
+          <div class="entry-hero">
+            <h2>准备进入在线问答</h2>
+            <p>系统将随机抽取 2 道题。每题仅录制一次，不可暂停或重录；不调用摄像头，但会调用麦克风完成录音与内容分析。</p>
+            <div class="flow-grid">
+              <div class="flow-step">
+                <span class="step-no">1</span>
+                <strong>60 秒准备</strong>
+                <span>阅读题目并确定作答成员</span>
+              </div>
+              <div class="flow-step">
+                <span class="step-no">2</span>
+                <strong>2 分钟作答</strong>
+                <span>系统开始计时，不可暂停</span>
+              </div>
+              <div class="flow-step">
+                <span class="step-no">3</span>
+                <strong>转写评分</strong>
+                <span>自动分析内容并给出改进建议</span>
+              </div>
+              <div class="flow-step">
+                <span class="step-no">4</span>
+                <strong>填报交卷</strong>
+                <span>确认两题作答成员后结束</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-body">
+              <div class="notice">
+                <i data-lucide="info"></i>
+              <div>每题录音结束后统一使用本地 Whisper 转写，再与标准答案比对评分。首次转写需要联网下载语音模型。</div>
+            </div>
+            <div class="panel-head" style="margin: 18px -18px 0; border-top: 1px solid var(--line);">
+              <strong>队伍成员</strong>
+              <span class="question-count">用于每题作答成员选择</span>
+            </div>
+            <div class="roster">
+              <div class="field">
+                <label for="member-1">成员 1</label>
+                <input id="member-1" value="选手一" maxlength="20">
+              </div>
+              <div class="field">
+                <label for="member-2">成员 2</label>
+                <input id="member-2" value="选手二" maxlength="20">
+              </div>
+              <div class="field">
+                <label for="member-3">成员 3</label>
+                <input id="member-3" value="选手三" maxlength="20">
+              </div>
+              <div class="field">
+                <label for="member-4">成员 4</label>
+                <input id="member-4" value="选手四" maxlength="20">
+              </div>
+            </div>
+            <div class="field" style="margin-top: 14px; max-width: 320px;">
+              <label for="recognition-language">语音识别语言</label>
+              <select id="recognition-language" style="width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 7px; background: #fff;">
+                <option value="en-US">English / 英文作答</option>
+                <option value="zh-CN">中文 / 中文作答</option>
+              </select>
+            </div>
+            <label style="display:flex; align-items:flex-start; gap:8px; margin-top:13px; color:var(--muted); font-size:12px;">
+              <input id="no-repeat-mode" type="checkbox" checked style="margin-top:3px;">
+              <span>不重复出题模式：每次模拟优先抽取尚未回答的问题，50 题全部完成一轮后自动重置。</span>
+            </label>
+            <button class="btn ghost" id="reset-question-pool" style="margin-top:7px;">
+              <i data-lucide="rotate-ccw"></i>重置不重复题库
+            </button>
+            <div class="button-row" style="margin-top: 18px;">
+              <button class="btn" id="start-exam-btn"><i data-lucide="play"></i>开始正式模拟</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-head"><strong>考试参数</strong></div>
+          <div class="panel-body">
+            <ul class="side-list" style="border-top: 0;">
+              <li><span>抽取题数</span><strong>2 题</strong></li>
+              <li><span>准备时间</span><strong>60 秒 / 题</strong></li>
+              <li><span>正式作答</span><strong>2 分钟 / 题</strong></li>
+              <li><span>最长窗口</span><strong>2 分 15 秒</strong></li>
+              <li><span>录制次数</span><strong>1 次</strong></li>
+              <li><span>视频设备</span><strong>关闭</strong></li>
+              <li><span>音频录制</span><strong>开启</strong></li>
+              <li><span>内容评分</span><strong>自动</strong></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div id="exam-room" class="exam-shell hidden">
+        <section class="exam-main">
+          <div class="exam-main-head">
+            <strong id="exam-phase-title">准备阶段</strong>
+            <span class="question-count" id="exam-question-count">第 1 / 2 题</span>
+          </div>
+          <div id="exam-content" class="exam-content"></div>
+          <div class="exam-actions">
+            <div class="speed-control">
+              <i data-lucide="gauge"></i>
+              <label for="speed-select">演示速度</label>
+              <select id="speed-select">
+                <option value="1">1× 正式速度</option>
+                <option value="10">10× 快速演示</option>
+                <option value="30">30× 快速演示</option>
+              </select>
+            </div>
+            <div class="button-row" id="exam-action-buttons"></div>
+          </div>
+        </section>
+        <aside class="exam-side">
+          <h2 class="side-title">本轮进度</h2>
+          <div id="timer-box" class="timer">
+            <div class="timer-inner">
+              <span id="timer-value" class="timer-value">60</span>
+              <span id="timer-label" class="timer-label">准备倒计时</span>
+            </div>
+          </div>
+          <div id="record-state" class="record-state hidden">
+            <span class="record-dot"></span>
+            正在录音并实时转写
+          </div>
+          <ul class="side-list">
+            <li><span>作答成员</span><strong id="answerer-label">未选择</strong></li>
+            <li><span>当前题目</span><strong id="current-q-side">1 / 2</strong></li>
+            <li><span>视频模式</span><strong>关闭</strong></li>
+            <li><span>录音模式</span><strong>开启</strong></li>
+          </ul>
+          <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+          <div class="progress-text" id="progress-text">第 1 题准备中</div>
+        </aside>
+      </div>
+
+      <div id="exam-info" class="panel hidden">
+        <div class="summary-hero">
+          <h2>填报作答成员信息</h2>
+          <p>按题目顺序确认作答成员，然后交卷结束本轮模拟。</p>
+        </div>
+        <div class="panel-body">
+          <div id="info-form" class="info-grid"></div>
+          <div class="button-row" style="margin-top: 18px;">
+            <button class="btn" id="submit-exam-btn"><i data-lucide="send"></i>确认信息并交卷</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="exam-summary" class="panel hidden">
+        <div class="summary-hero">
+          <h2>模拟考试已完成</h2>
+          <p id="summary-subtitle">本轮共完成 2 道题。</p>
+          <div id="save-state" class="save-state" style="margin-top:8px; color:#d7f4ef;">
+            <i data-lucide="database"></i>正在保存答题记录
+          </div>
+        </div>
+        <div id="summary-list" class="summary-list"></div>
+        <div class="panel-body" style="padding-top: 0;">
+          <div class="button-row">
+            <button class="btn secondary" id="export-summary-pdf"><i data-lucide="file-text"></i>导出本次PDF</button>
+            <button class="btn" id="restart-exam-btn"><i data-lucide="rotate-ccw"></i>重新模拟</button>
+            <button class="btn secondary" id="summary-bank-btn"><i data-lucide="library"></i>查看题库</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-bank" class="view">
+      <div class="page-heading">
+        <div>
+          <h1>在线问答题库</h1>
+          <p>共 50 题，均为开放式问题，可按主题筛选或直接开始单题模拟。</p>
+        </div>
+      </div>
+      <div class="bank-toolbar">
+        <div id="category-tabs" class="category-tabs"></div>
+        <span class="bank-count" id="bank-count">共 50 题</span>
+      </div>
+      <div id="bank-grid" class="bank-grid"></div>
+    </section>
+
+    <section id="view-history" class="view">
+      <div class="page-heading">
+        <div>
+          <h1>答题记录</h1>
+          <p>本地保存每次模拟的录音、转写、评分和分析报告。</p>
+        </div>
+      </div>
+      <div class="history-toolbar">
+        <span id="history-count" class="bank-count">共 0 次记录</span>
+        <div class="button-row">
+          <button class="btn secondary" id="export-all-pdf"><i data-lucide="file-text"></i>导出全部PDF</button>
+          <button class="btn secondary" id="export-all-history"><i data-lucide="download"></i>导出全部报告</button>
+          <button class="btn danger" id="clear-history"><i data-lucide="trash-2"></i>清空记录</button>
+        </div>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </section>
+
+    <section id="view-rules" class="view">
+      <div class="page-heading">
+        <div>
+          <h1>考试流程与规则</h1>
+          <p>依据省赛选手操作手册整理，用于模拟流程校准。</p>
+        </div>
+      </div>
+      <div class="rules-grid">
+        <article class="rule-card">
+          <h3><i data-lucide="list-ordered"></i>在线问答流程</h3>
+          <ul>
+            <li>每题展示后安排 60 秒准备，由队伍确定作答成员。</li>
+            <li>准备结束后自动进入作答，系统开始倒计时。</li>
+            <li>正式回答时长 2 分钟，最长录制窗口为 2 分 15 秒。</li>
+            <li>每题仅可录制一次，不可暂停，也不可重新录制。</li>
+            <li>完成 2 道题后填报作答成员信息并交卷。</li>
+          </ul>
+        </article>
+        <article class="rule-card">
+          <h3><i data-lucide="mic"></i>本模拟模式</h3>
+          <ul>
+            <li>不调用摄像头，但每题会调用麦克风进行录音。</li>
+            <li>录音保存在当前浏览器页面中，可回放和下载。</li>
+            <li>Chrome 可将英文或中文语音自动转写为文本。</li>
+            <li>系统按相关性、结构、深度、表达和时间控制评分。</li>
+          </ul>
+        </article>
+        <article class="rule-card">
+          <h3><i data-lucide="shield-alert"></i>正式比赛注意</h3>
+          <ul>
+            <li>须脱稿回答，不得使用耳机、耳麦、纸质材料或电子提示。</li>
+            <li>准备与作答期间，所有参赛成员须留在监考画面中。</li>
+            <li>画面中禁止出现学校名称、标识和成员姓名。</li>
+            <li>作答中断、设备故障或上传失败由选手自行承担责任。</li>
+          </ul>
+        </article>
+        <article class="rule-card">
+          <h3><i data-lucide="clock-3"></i>答辩时间分配</h3>
+          <ul>
+            <li>0-15 秒：直接给出核心观点。</li>
+            <li>15-95 秒：给出三条理由、证据或案例。</li>
+            <li>95-120 秒：回到中国意义、局限或未来展望。</li>
+            <li>建议控制英文语速，避免在最后 15 秒仓促收尾。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div id="modal-title" class="modal-head">提示</div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-actions">
+        <button class="btn secondary" id="modal-cancel">取消</button>
+        <button class="btn" id="modal-confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      {
+        id: 1,
+        category: "选题与意义",
+        en: "What problem does your report address, and why is it important now?",
+        zh: "你们的报告试图解决什么问题？为什么这一问题在当前具有重要性？"
+      },
+      {
+        id: 2,
+        category: "选题与意义",
+        en: "Why did your team choose this topic, and how did you decide where to focus?",
+        zh: "你们为什么选择这一主题？又是如何确定研究重点的？"
+      },
+      {
+        id: 3,
+        category: "选题与意义",
+        en: "What is the central idea of your report, and how would you explain it in plain language?",
+        zh: "你们报告的核心观点是什么？能否用通俗语言说明？"
+      },
+      {
+        id: 4,
+        category: "选题与意义",
+        en: "Why is battery evidence continuity important for the future of electric aviation?",
+        zh: "为什么电池证据连续性对电动航空的未来很重要？"
+      },
+      {
+        id: 5,
+        category: "选题与意义",
+        en: "What could happen if battery health evidence is reused without checking its applicability?",
+        zh: "如果在未检查适用性的情况下直接复用电池健康证据，可能带来什么后果？"
+      },
+      {
+        id: 6,
+        category: "选题与意义",
+        en: "What do you consider the most valuable contribution of your research?",
+        zh: "你们认为这项研究最有价值的贡献是什么？"
+      },
+      {
+        id: 7,
+        category: "中国措施与帮助",
+        en: "What has China already done in this field, and what foundation does it provide?",
+        zh: "中国在这一领域已经做了哪些工作？这些工作提供了怎样的基础？"
+      },
+      {
+        id: 8,
+        category: "中国措施与帮助",
+        en: "How does your research respond to the needs or gaps in China's current development?",
+        zh: "你们的研究如何回应中国当前发展中的需求或不足？"
+      },
+      {
+        id: 9,
+        category: "中国措施与帮助",
+        en: "How do your findings complement existing Chinese policies, standards, and practices?",
+        zh: "你们的研究如何补充中国现有政策、标准和实践？"
+      },
+      {
+        id: 10,
+        category: "中国措施与帮助",
+        en: "How could your work benefit China's regulators, industries, operators, or society?",
+        zh: "你们的工作可能怎样帮助中国的监管机构、产业、运营人或社会？"
+      },
+      {
+        id: 11,
+        category: "中国措施与帮助",
+        en: "What advantages and challenges does China face in developing and applying this kind of solution?",
+        zh: "中国在发展并应用这类方案时具有哪些优势和挑战？"
+      },
+      {
+        id: 12,
+        category: "中国措施与帮助",
+        en: "How can your research support the safe and sustainable development of China's low-altitude economy?",
+        zh: "你们的研究如何支持中国低空经济的安全与可持续发展？"
+      },
+      {
+        id: 13,
+        category: "方法与证据",
+        en: "What methods did you use, and why are they appropriate for your research question?",
+        zh: "你们采用了哪些研究方法？为什么这些方法适合你们的研究问题？"
+      },
+      {
+        id: 14,
+        category: "方法与证据",
+        en: "How did you combine policy analysis, literature, engineering evidence, and practical demonstration?",
+        zh: "你们如何把政策分析、文献、工程证据和实践演示结合起来？"
+      },
+      {
+        id: 15,
+        category: "方法与证据",
+        en: "How do you judge whether a model or its conclusions are credible enough to be used?",
+        zh: "你们如何判断一个模型或其结论是否足以可信并可以使用？"
+      },
+      {
+        id: 16,
+        category: "方法与证据",
+        en: "Why did you choose to demonstrate feasibility through a prototype or engineering example?",
+        zh: "你们为什么选择通过原型或工程案例来验证可行性？"
+      },
+      {
+        id: 17,
+        category: "方法与证据",
+        en: "Which part of your evidence is strongest, and which part still needs further validation?",
+        zh: "你们证据中最有力的部分是什么？哪些部分仍需要进一步验证？"
+      },
+      {
+        id: 18,
+        category: "方法与证据",
+        en: "How should your results be interpreted without going beyond the scope of the research?",
+        zh: "应当如何解释你们的研究结果，才能避免超出研究范围？"
+      },
+      {
+        id: 19,
+        category: "创新与局限",
+        en: "How does your research differ from, or add to, what has already been done?",
+        zh: "你们的研究与已有工作相比有什么不同，或者增加了什么？"
+      },
+      {
+        id: 20,
+        category: "创新与局限",
+        en: "What role should digital technology and human judgment each play in your solution?",
+        zh: "在你们的方案中，数字技术和人工判断应分别发挥什么作用？"
+      },
+      {
+        id: 21,
+        category: "创新与局限",
+        en: "What are the main limitations of your research, and what should be considered before it is applied?",
+        zh: "你们的研究主要有哪些局限？在真正应用前还需要考虑什么？"
+      },
+      {
+        id: 22,
+        category: "创新与局限",
+        en: "What risks may arise if people rely too heavily on a model or a single health score?",
+        zh: "如果人们过度依赖模型或单一健康分数，可能产生哪些风险？"
+      },
+      {
+        id: 23,
+        category: "创新与局限",
+        en: "How does your work address responsibility, transparency, and accountability?",
+        zh: "你们的研究如何处理责任、透明度和可追责性？"
+      },
+      {
+        id: 24,
+        category: "创新与局限",
+        en: "How can your approach remain reliable as technologies, regulations, and operating conditions change?",
+        zh: "当技术、法规和运行条件变化时，你们的方案如何保持可靠性？"
+      },
+      {
+        id: 25,
+        category: "应用与未来",
+        en: "How could your solution be used in a real maintenance or operational workflow?",
+        zh: "你们的方案可以怎样用于真实维修或运行流程？"
+      },
+      {
+        id: 26,
+        category: "应用与未来",
+        en: "What conditions would be needed for a credible pilot or practical implementation?",
+        zh: "如果要开展可信的试点或实际应用，需要具备哪些条件？"
+      },
+      {
+        id: 27,
+        category: "应用与未来",
+        en: "What international value could your research provide, and how could it support cooperation?",
+        zh: "你们的研究具有什么国际价值？可以怎样支持国际合作？"
+      },
+      {
+        id: 28,
+        category: "应用与未来",
+        en: "What future technologies or interdisciplinary developments could strengthen your work?",
+        zh: "哪些未来技术或跨学科发展可以进一步增强你们的方案？"
+      },
+      {
+        id: 29,
+        category: "应用与未来",
+        en: "Looking five to ten years ahead, what role could this idea play in electric aviation?",
+        zh: "五到十年后，这一理念可能在电动航空中发挥什么作用？"
+      },
+      {
+        id: 30,
+        category: "应用与未来",
+        en: "If you had more time and resources, what would you do next, and why?",
+        zh: "如果拥有更多时间和资源，你们下一步会做什么？为什么？"
+      },
+      {
+        id: 31,
+        category: "中国措施与帮助",
+        en: "How can China contribute to international cooperation on battery evidence and airworthiness?",
+        zh: "中国可以怎样在电池证据和适航领域推动国际合作？"
+      },
+      {
+        id: 32,
+        category: "方法与证据",
+        en: "How does your research address data sharing, privacy, and security concerns?",
+        zh: "你们的研究如何处理数据共享、隐私和安全问题？"
+      },
+      {
+        id: 33,
+        category: "创新与局限",
+        en: "Why is transparency important in a battery health management system?",
+        zh: "为什么透明度对电池健康管理系统很重要？"
+      },
+      {
+        id: 34,
+        category: "选题与意义",
+        en: "How can better battery evidence support everyday maintenance decisions?",
+        zh: "更完善的电池证据可以怎样支持日常维修决策？"
+      },
+      {
+        id: 35,
+        category: "方法与证据",
+        en: "What is the difference between a digital thread and a digital twin in your work?",
+        zh: "在你们的研究中，数字线程与数字孪生有什么区别？"
+      },
+      {
+        id: 36,
+        category: "创新与局限",
+        en: "How do you prevent your conclusions from going beyond the evidence you actually have?",
+        zh: "你们如何避免结论超出实际掌握的证据范围？"
+      },
+      {
+        id: 37,
+        category: "方法与证据",
+        en: "Why is a model validity domain important when applying a health estimate?",
+        zh: "在应用健康估计时，为什么模型有效域很重要？"
+      },
+      {
+        id: 38,
+        category: "选题与意义",
+        en: "What should happen when a battery pack is replaced and the old evidence may no longer apply?",
+        zh: "当电池包被替换且旧证据可能不再适用时，应该怎样处理？"
+      },
+      {
+        id: 39,
+        category: "中国措施与帮助",
+        en: "What role can data governance play in making battery evidence more reliable?",
+        zh: "数据治理可以怎样提升电池证据的可靠性？"
+      },
+      {
+        id: 40,
+        category: "中国措施与帮助",
+        en: "How could your framework support future regulatory or standardisation work in China?",
+        zh: "你们的框架可以怎样支持中国未来的监管或标准化工作？"
+      },
+      {
+        id: 41,
+        category: "中国措施与帮助",
+        en: "How could battery manufacturers benefit from a common evidence framework?",
+        zh: "电池制造商可以怎样从共同的证据框架中受益？"
+      },
+      {
+        id: 42,
+        category: "中国措施与帮助",
+        en: "How could aircraft operators benefit from traceable battery evidence?",
+        zh: "飞机运营人可以怎样从可追溯电池证据中受益？"
+      },
+      {
+        id: 43,
+        category: "方法与证据",
+        en: "What would count as success when evaluating your proposed framework?",
+        zh: "评价你们提出的框架时，什么情况可以视为成功？"
+      },
+      {
+        id: 44,
+        category: "创新与局限",
+        en: "What are the most important risks that should be managed before practical use?",
+        zh: "在实际使用前，最重要、需要管理的风险有哪些？"
+      },
+      {
+        id: 45,
+        category: "创新与局限",
+        en: "How can human oversight be preserved when digital tools become more automated?",
+        zh: "当数字工具更加自动化时，如何保留人工监督？"
+      },
+      {
+        id: 46,
+        category: "方法与证据",
+        en: "What knowledge from different disciplines is needed to make this research successful?",
+        zh: "要让这项研究真正成功，需要哪些不同学科的知识？"
+      },
+      {
+        id: 47,
+        category: "应用与未来",
+        en: "How can the framework adapt to future battery chemistries and new sensor technologies?",
+        zh: "该框架可以怎样适应未来电池化学体系和新型传感器技术？"
+      },
+      {
+        id: 48,
+        category: "应用与未来",
+        en: "How could this research affect public trust in electric aviation?",
+        zh: "这项研究可能怎样影响公众对电动航空的信任？"
+      },
+      {
+        id: 49,
+        category: "应用与未来",
+        en: "How could your research be turned into a practical standard, tool, or service?",
+        zh: "你们的研究可以怎样转化为实际的标准、工具或服务？"
+      },
+      {
+        id: 50,
+        category: "创新与局限",
+        en: "What is the most original aspect of your work, and what evidence supports it?",
+        zh: "你们工作中最具原创性的部分是什么？有什么证据支持？"
+      }
+    ];
+
+    const STANDARD_ANSWERS = {
+      1: {
+        answer: "The report addresses a continuing-airworthiness problem: battery health estimates may lose their supporting evidence after a battery pack, installation, software baseline, or operating temperature changes. A numerically plausible estimate can therefore be based on obsolete measurements or assumptions. The research argues that every health estimate should remain connected to the specific battery installation, configuration, model validity domain, uncertainty, and authorised review. CADTF is proposed as a ground-based evidence and decision-support framework that creates this connection. The significance is that electric training aircraft will operate and change in service, while maintenance decisions must remain traceable, repeatable, and safe. The framework does not grant dispatch permission; it provides auditable evidence for qualified maintenance personnel.",
+        points: ["构型变化会使原有健康证据失效", "证据必须连接到具体电池装机与模型有效域", "CADTF提供可审计的维修决策支持"]
+      },
+      2: {
+        answer: "The team chose the topic because electric aviation is moving into training, short-distance transport, and low-altitude operations, while propulsion batteries continuously change through replacement, ageing, software updates, and new operating conditions. This creates a gap between certification evidence and long-term maintenance evidence. The focus was narrowed to small electric training aircraft and a ground-based advisory service because this setting is concrete, safety-relevant, and compatible with China's policy, regulatory, battery-industry, and low-altitude developments. The research does not attempt to solve all electric aircraft or all battery chemistry problems. It concentrates on evidence continuity for one battery installation, using published sources, engineering requirements, a CATIA-Abaqus demonstration, and a prototype.",
+        points: ["电动航空已进入真实运行场景", "电池变化导致维修证据失效", "聚焦小型教练机和地面辅助服务"]
+      },
+      3: {
+        answer: "The central idea is that a battery health estimate should not be treated as an isolated number. It should be linked to the physical pack, aircraft installation, configuration revision, software baseline, calibrated measurements, model version, validity domain, uncertainty, and responsible reviewer. CADTF combines a digital thread, a validity-gated digital twin, a bilingual evidence dictionary, structured evidence packages, and human review. The digital thread preserves identity and history, while the twin updates condition from measurements. If evidence is incomplete or the model is outside its validated domain, the result becomes review-required or blocked. The framework is therefore a review gate, not an automatic approval system. Its purpose is to ensure that maintenance advice remains traceable from the physical installation to the evidence behind it.",
+        points: ["健康估计必须连接具体装机和适用证据", "数字线程保存历史，孪生更新状态", "有效域门控和人工审查控制输出"]
+      },
+      4: {
+        answer: "Battery evidence continuity matters because the battery is central to electric flight and changes throughout service. A replacement pack may have different mass, resistance, thermal behaviour, or cycle history. A software or maintenance change may invalidate the original model assumptions. If the previous evidence is reused without checking applicability, maintenance decisions may look data-driven while relying on inputs that no longer apply. Evidence continuity supports safer maintenance, controlled configuration change, traceability, and trust between manufacturers, operators, and regulators. It also makes model-based health estimates more credible because their valid conditions and uncertainty are visible. For electric aviation to scale, it must manage not only battery performance but also the evidence needed to support every maintenance and airworthiness decision.",
+        points: ["电池在服役期内持续变化", "旧证据可能不再适用于新构型", "证据连续性支撑安全、审查和规模化运行"]
+      },
+      5: {
+        answer: "If battery health evidence is reused without checking applicability, the result may appear accurate but be based on obsolete inputs, an incompatible model, or an untested operating condition. This can lead to an incorrect maintenance decision, missed warning signs, unnecessary replacement, or false confidence in safety. It can also break the audit trail because the reviewer cannot reconstruct which pack, software version, measurement, or model produced the estimate. High health scores would not remove this risk, because they do not rule out internal faults or thermal hazards. The correct response is to establish a new installation record, compare configuration and validity conditions, reuse only justified evidence, and trigger review when mapping fails. CADTF therefore treats model validity and evidence completeness as gates, not optional information.",
+        points: ["看似合理的估计可能建立在过时证据上", "错误复用会导致维修和安全风险", "构型映射失败时必须触发复核或阻断"]
+      },
+      6: {
+        answer: "The main contribution is not a universal battery-health algorithm. It is an auditable evidence architecture that connects an estimate to a specific battery installation and the conditions under which it may be used. The research formalises configuration mapping, model cards and validity boundaries, calibration and uncertainty records, and authorised review dispositions. It also demonstrates feasibility through a CATIA-Abaqus structural-thermal study, a browser and Android prototype, synthetic evidence packages, and a staged pilot plan. The framework adds a bilingual dictionary to support data exchange among organisations. Its value lies in making evidence continuity reviewable and testable, while clearly separating engineering advice from airworthiness approval. The work provides a concrete route from existing Chinese measures to a maintenance-evidence service.",
+        points: ["提出可审计的证据架构而非通用算法", "落地构型、模型、校准和审查记录", "提供工程演示、双语字典和试点方案"]
+      },
+      7: {
+        answer: "China has already created a substantial foundation. National policy supports green aviation, electric aircraft, digital manufacturing, and the low-altitude economy. The CAAC has issued the RX1E battery special condition and the EH216-S special condition, conducted type review, and granted production-licence experience for a passenger-carrying unmanned aircraft. CCAR-21-R4 and CCAR-92 cover approval and unmanned-aircraft operations. Continuing-airworthiness and data-governance documents support lifecycle oversight and data-rich systems. Battery safety, coding, telemetry, and remote-service standards provide product and data foundations. These measures show real capability, but they remain distributed across certification, product safety, operations, data management, and maintenance. The remaining opportunity is to connect them at the level of an individual propulsion-battery installation.",
+        points: ["产业政策和低空经济已经形成政策基础", "RX1E、EH216-S、CCAR和持续适航已有实践", "电池、遥测和数据治理标准提供支撑"]
+      },
+      8: {
+        answer: "The main gap is not the absence of regulation, technology, or data systems. It is the weak connection between them. Battery identity is not consistently mapped to aircraft configuration; safety assurance and health estimation use separate evidence; digital-twin work is rarely battery-specific; model validity and uncertainty are not mandatory records; and replacement packs lack a standard evidence-inheritance process. As a result, initial approval evidence may not survive ageing or configuration change. The research responds by specifying records and review gates that make evidence applicable to a particular installation. It integrates existing Chinese measures rather than replacing them. The result is a testable evidence service that can support maintenance review, data governance, and future standards or pilots.",
+        points: ["问题在接口断点而非缺少单项制度", "五个缺口导致证据无法贯穿全寿命", "CADTF连接现有体系并形成可测试服务"]
+      },
+      9: {
+        answer: "The research complements existing Chinese policies and standards by adding four records that are not yet standardised: configuration mapping, a model card with a validity boundary, calibration and uncertainty records, and an authorised review disposition. Existing rules define approval, safety, operation, battery product requirements, telemetry, and data governance. CADTF does not change those responsibilities or replace approved maintenance. It provides a common way to link them to a specific battery installation and software baseline. This makes it easier for a reviewer to reconstruct why an estimate was accepted, rejected, or blocked. The bilingual dictionary can also improve interoperability across manufacturers, operators, maintenance organisations, and regulators, while local approval authority remains unchanged.",
+        points: ["补充四类尚未标准化的证据记录", "不替代法规、批准程序或维修责任", "提升跨组织数据交换和审查一致性"]
+      },
+      10: {
+        answer: "For regulators, the work offers a clearer audit trail for model applicability, uncertainty, and review responsibility. Manufacturers can control design baselines, model versions, and validity domains. Operators can maintain reliable installation and maintenance histories. Maintenance organisations can connect measurements and approved procedures to advisory outputs. The bilingual evidence dictionary reduces ambiguity when data move between organisations. Society benefits when electric aircraft and low-altitude services can expand without relying on undocumented or outdated battery evidence. The framework does not make safety decisions automatically, and it does not grant approval. Its benefit is to make decisions more explainable, repeatable, and traceable, which can reduce maintenance uncertainty and support safer adoption of electric aviation.",
+        points: ["监管机构获得可审计的适用性与责任链", "制造商、运营人和维修单位共享统一记录", "支持安全采用和低空经济规模化发展"]
+      },
+      11: {
+        answer: "China has strong advantages: a large battery industry, expanding electric-aircraft and low-altitude markets, a mature civil-aviation regulator, existing special-condition experience, and active data governance. These conditions make a Chinese framework realistic and internationally relevant. The main challenges are access to representative pack data, defining validation domains, integrating legacy maintenance systems, protecting commercial information, and establishing independent review. Organisational cooperation may be harder than the technical implementation. The research addresses these issues by allowing raw data to remain local while sharing controlled summaries and hashes, and by introducing staged implementation. A pilot would test traceability, model applicability, and alert burden before any operational claim. The framework is therefore ambitious but bounded.",
+        points: ["产业、市场、监管和数据治理构成优势", "代表数据、有效域、系统集成和审查是挑战", "分阶段实施可降低技术和组织风险"]
+      },
+      12: {
+        answer: "The low-altitude economy depends on frequent operations, rapid turnaround, battery replacement, and reliable maintenance. As utilisation increases, configuration changes and battery ageing become more common. Evidence continuity can support safe and sustainable expansion by helping operators know whether a health estimate still applies after a pack or software change. It can also improve planning for battery reuse, replacement, and lifecycle management. The CADTF pilot plan measures traceability, model error, uncertainty coverage, false alerts, missed alerts, and reconstruction time. These indicators connect battery evidence to operational reliability rather than only technical performance. The framework does not claim net environmental benefit or automatic safety, but it provides a controlled evidence layer that can support low-altitude operations as they mature.",
+        points: ["低空经济带来高频运行和电池更换需求", "证据连续性支持维修可靠性和生命周期管理", "试点以可追溯性、模型性能和告警负担评价"]
+      },
+      13: {
+        answer: "The study combines a targeted narrative review, engineering requirements analysis, and an implementation demonstration. The review starts with Chinese policy, standards, special conditions, and industry practice, then uses international airworthiness, battery, digital-twin, and model-assurance sources to test the proposed evidence record. Requirements are derived from the intended maintenance decision rather than from a preferred technology. A CATIA-Abaqus example tests whether configuration and validity information can be demonstrated in engineering artefacts. Browser and Android prototypes test configuration checks, health estimation, validity gating, evidence hashing, and review. The pilot plan defines traceability, model-performance, workflow, alert, and cost indicators. The method is appropriate because the research question is socio-technical and requires both document evidence and practical workflow demonstration.",
+        points: ["采用文献综述、需求分析和实现演示", "从实际维修决策推导证据要求", "工程样例和原型共同检验流程可行性"]
+      },
+      14: {
+        answer: "Policy analysis establishes what China already regulates and where responsibility sits. Literature and standards show what battery safety, continued airworthiness, digital twins, and model credibility require. Engineering evidence tests whether configuration and parameter changes produce observable effects and can be recorded. The prototype demonstrates whether the workflow can generate, validate, block, review, hash, and export evidence packages. These layers are connected by a common unit of analysis: the maintenance advisory record for one battery installation. Policy and standards define the operating boundary; engineering analysis defines measurable conditions; the prototype shows how the records can be generated and reviewed. This combination prevents the research from remaining abstract and also prevents a simulation result from being mistaken for certification evidence.",
+        points: ["政策回答责任边界，文献回答技术依据", "工程仿真验证参数和构型变化", "原型验证记录生成与审查工作流"]
+      },
+      15: {
+        answer: "A model is credible only relative to an intended use. The assessment should identify what decision the model supports, what data and assumptions it uses, how it was verified and validated, what uncertainty it carries, and where it should not be used. A mathematically correct implementation does not prove suitability for a new pack, chemistry, temperature, or load. CADTF therefore uses a model card, validity domain, calibration and input-window records, uncertainty reporting, and review states. Results inside the domain can be considered valid; results near the boundary require review; unsupported results are blocked. Human reviewers remain responsible for acceptance or rejection. This approach makes credibility conditional and auditable rather than treating a model output as automatically true.",
+        points: ["可信度取决于预期用途和适用条件", "需要验证、确认、不确定度和有效域", "Valid、Review required、Blocked构成门控"]
+      },
+      16: {
+        answer: "A prototype was used because the research question is about whether a traceable workflow can actually be generated, checked, blocked, reviewed, and exported. A written framework alone would not show whether configuration records, validity gates, evidence hashes, and review dispositions can be handled in one process. The CATIA-Abaqus example also shows how engineering changes such as mass and thermal boundaries can produce review triggers. The prototype uses synthetic data, so it demonstrates implementation and workflow feasibility, not real-battery accuracy or operational effectiveness. Its value is to expose missing fields, interface problems, and review responsibilities early. This supports the next step, which is to validate models and dictionaries with representative battery data and an independently reviewed pilot.",
+        points: ["原型用于检验工作流能否真正运行", "仿真展示质量变化和热边界的影响", "合成数据只证明可行性，不证明运行有效性"]
+      },
+      17: {
+        answer: "The strongest part is the traceability architecture: it clearly separates identity, configuration, measurements, model version, validity, uncertainty, evidence integrity, and human responsibility. The engineering simulation also provides concrete model-level checks and shows why a replacement pack can trigger reassessment. The weakest part is validation against real propulsion batteries. The study uses an equivalent battery enclosure, representative thermal inputs, synthetic prototype data, and no flight tests or pack-level experiments. It therefore cannot establish real degradation accuracy, thermal-runaway protection, fatigue life, or airworthiness. The strength is the auditable route from an estimate to its evidence; the required next step is representative measurement, independent testing, and controlled pilot evaluation.",
+        points: ["最强项是证据链、有效域和审查设计", "仿真仅提供模型级工程证据", "薄弱环节是真实电池数据、试验和飞行验证"]
+      },
+      18: {
+        answer: "The results should be interpreted as requirements, workflow evidence, and model-level engineering demonstrations. The structural-thermal study shows that configuration and temperature conditions can change results and should trigger review. The prototype shows that evidence packages can be generated, blocked, reviewed, and hashed. Neither result proves that a real battery is safe, that a health model is accurate on an aircraft pack, or that the framework is approved. Claims should remain limited to what the evidence supports: traceability and workflow feasibility. Operational effectiveness, certification credit, environmental benefit, and predictive accuracy all require separate data and independent review. This boundary is part of the research contribution because it prevents model output from being confused with airworthiness approval.",
+        points: ["结果属于需求、流程和模型级工程证据", "不能外推为真实电池安全或适航批准", "所有运行效益和预测精度仍需独立验证"]
+      },
+      19: {
+        answer: "Existing research often studies battery degradation, digital twins, airworthiness rules, or maintenance separately. This work connects them through evidence continuity. Its novelty is the treatment of evidence applicability as a first-class design problem. CADTF adds a digital thread for identity and history, a validity-gated health twin, structured evidence packages, a bilingual dictionary, and authorised review. It also links a configuration-change simulation to an explicit review trigger. The contribution is not a new battery algorithm or a universal safety conclusion. It is a reproducible architecture that can accept different models, sensors, chemistries, and operators while preserving the conditions under which each estimate may be used. This integration is what makes the proposal different and testable.",
+        points: ["把证据适用性作为核心设计问题", "将线程、孪生、字典和审查连接起来", "创新在于可复现集成而非单一算法"]
+      },
+      20: {
+        answer: "Digital technology should organise evidence, update state, check validity, and expose uncertainty. Human judgment should decide whether the evidence is acceptable and what maintenance action is appropriate. The digital thread preserves identity and history, while the twin produces estimates and validity states. The system can calculate and gate, but it cannot take legal or operational responsibility. CADTF therefore uses role-based access, signed revisions, review dispositions, and change history. The output remains advice until a qualified person accepts it. This division reduces the risk of automation bias and preserves approved organisational responsibility. A transparent model card and audit trail help the reviewer understand why a result was valid, required review, or blocked.",
+        points: ["数字技术负责记录、计算、门控和不确定性", "人员负责接受、拒绝和维修责任", "角色权限、签名和审计记录保障可追责"]
+      },
+      21: {
+        answer: "The main limitations are that the battery pack is represented as an equivalent continuum, the installation uses full constraints without bolt preload or aircraft-side flexibility, and the thermal inputs are representative rather than measured. The prototype relies on synthetic data and a simple capacity-resistance estimator. There is no real-battery experiment, flight test, fatigue assessment, thermal-runaway propagation study, or certification conclusion. The automatic analysis in this demonstration also depends on transcript quality. These limitations mean the results can support workflow design and parameter sensitivity, but not operational approval. Before application, representative pack data, calibrated models, independent validation, security review, and a controlled pilot would be required.",
+        points: ["等效电池、全约束和代表性热输入限制工程结论", "原型使用合成数据且缺少真实试验", "应用前需要实测、校准、独立验证和试点"]
+      },
+      22: {
+        answer: "Overreliance is risky because a model output can look precise while its inputs, assumptions, or validation domain are no longer applicable. A high health score may coexist with an internal fault, and a model can be accurate in one temperature or duty profile but not another. Automated advice may also create accountability gaps if no reviewer understands how the result was produced. CADTF addresses these risks through validity gating, uncertainty reporting, model cards, calibration records, blocked states, and human review. It never treats a score as proof of safety or approval for dispatch. Users should see not only the estimate but also its evidence and limitations. This makes it harder for a single metric to replace engineering judgment or safety protection.",
+        points: ["高健康分数不能排除内部故障和热风险", "模型可能超出有效域或形成责任空白", "门控、不确定度和人工审查降低误用风险"]
+      },
+      23: {
+        answer: "Responsibility is assigned by role. Manufacturers control design baselines and model documentation; operators maintain aircraft and installation records; maintenance personnel perform approved inspections and actions; analysts maintain models, model cards, and dictionaries; qualified reviewers decide whether evidence is acceptable. CADTF records role-based access, signed revisions, decisions, rationale, and change history. A model can recommend review, but it cannot approve maintenance. Transparency comes from exposing input provenance, model version, validity limits, uncertainty, and evidence hashes. Accountability comes from linking the final disposition to a named reviewer and an approved procedure. These controls make it possible to distinguish a controlled correction from an undocumented alteration.",
+        points: ["制造商、运营人、维修人员、分析人员和审查者职责分离", "模型不批准维修，只能形成建议和门控状态", "签名、权限和变更历史保证透明与追责"]
+      },
+      24: {
+        answer: "Reliability under change depends on treating change itself as an event that triggers a new evidence context. When a pack, installation, software, chemistry, or operating range changes, CADTF creates or updates the relevant records and checks configuration mapping, calibration, model version, and validity conditions. Evidence is inherited only when the mapping is justified. Otherwise the output becomes review-required or blocked. Model cards, versioning, bilingual field semantics, and controlled data governance allow the architecture to evolve without losing traceability. New technologies can be inserted if they remain within the same evidence contract. The pilot should repeatedly test these transitions. This makes reliability a managed process rather than an assumption that older evidence remains valid.",
+        points: ["任何构型、软件或工况变化都触发新证据环境", "仅允许有依据地继承证据，否则复核或阻断", "版本化、字典和数据治理支持持续演进"]
+      },
+      25: {
+        answer: "In a real maintenance workflow, the operator first identifies the aircraft, pack, installation, configuration, and software baseline. Measurements arrive from approved tools or sensors and are checked for calibration, unit, time window, and provenance. CADTF runs the health model only inside its validity domain. The system produces a structured evidence package with the model version, uncertainty, supporting records, and hash. A qualified reviewer then accepts, rejects, or escalates the advice according to approved procedures. If a pack is replaced, the system creates a new installation record and checks whether evidence can be inherited. The output remains advisory and does not replace maintenance release. This workflow could be integrated into an existing maintenance-information system in stages.",
+        points: ["先识别装机、构型和校准测量", "在有效域内生成结构化建议和证据包", "合格人员审查并依据批准程序执行维修"]
+      },
+      26: {
+        answer: "A credible pilot needs representative access, clear responsibility, and measurable acceptance criteria. The proposed plan uses two small training aircraft of one type, one operator, and one maintenance organisation, subject to access and approval. It first establishes the bilingual dictionary, data ownership rules, manual baseline, configuration map, and fallback procedure. The model is then tested with separated cell or pack partitions, controlled temperature and demand, sensor faults, and independent capacity and resistance references. The next stage uses shadow-mode monitoring while approved procedures remain authoritative. Finally, cases are independently reviewed, traceability and reconstruction time are measured, and alert burden and cost are assessed. Thresholds must be set before testing from intended use and safety requirements.",
+        points: ["需要机型、运营人、维修单位和数据访问条件", "先建基线和字典，再做受控验证与影子监测", "测试前确定验收阈值并由独立人员审查"]
+      },
+      27: {
+        answer: "The case study is Chinese, but the evidence architecture is transferable. Different countries have different approval systems, yet they face similar problems of battery identity, model validity, uncertainty, configuration change, and evidence inheritance. CADTF separates local regulatory responsibility from the common technical record. A bilingual dictionary can align terms with international airworthiness, digital-twin, and model-assurance frameworks. The framework may support mutual understanding, supply-chain cooperation, research exchange, and future standardisation. It does not automatically provide international certification or override national requirements. Its international value is that it makes the logic of a Chinese solution explicit and reviewable, so other organisations can adapt the architecture without pretending that one regulator's approval applies everywhere.",
+        points: ["中国案例具有可迁移的证据架构", "双语字段有助于国际理解和数据交换", "不替代各国审批和适航责任"]
+      },
+      28: {
+        answer: "Several developments could strengthen the work. Improved pack-level sensors and battery-management data could calibrate capacity, resistance, and thermal models. Secure data spaces and privacy-preserving sharing could allow cross-organisation evidence without exposing raw commercial data. Advanced diagnostics, machine learning, and physics-informed models could improve prediction, provided validity and uncertainty remain explicit. Digital signatures, trusted time stamps, and standard APIs could strengthen evidence integrity and interoperability. Battery passport concepts and lifecycle standards could provide additional data continuity. Human-factors research could improve how reviewers understand blocked states and uncertainty. These technologies should be added within the same evidence contract rather than creating isolated systems. The key requirement is that new methods remain traceable, validated, and subject to human responsibility.",
+        points: ["传感器、数据空间和物理信息模型可提升精度", "签名、标准接口和电池护照增强证据连续性", "新技术必须在有效域、不确定度和人工责任框架内使用"]
+      },
+      29: {
+        answer: "In five to ten years, evidence continuity could become a normal part of battery lifecycle management for electric aircraft. A battery or replacement pack could carry a controlled digital identity linked to installation, software, measurements, calibration, model history, and maintenance decisions. Validity gating may become a standard function of maintenance information systems, while regulators and auditors use traceable evidence packages. The approach could extend from small trainers to larger electric or hybrid aircraft if the data and models are validated at the relevant level. International terminology and evidence fields may become more aligned. The most important change would be cultural: users would no longer ask only for a health percentage, but also for the evidence, conditions, uncertainty, and responsible review behind it.",
+        points: ["证据连续性可能成为电池生命周期管理常态", "数字身份和有效域门控融入维修信息系统", "行业将从单一分数转向证据、条件和责任"]
+      },
+      30: {
+        answer: "With more time and resources, the next step would be to obtain representative propulsion-battery data and calibrate the electrical and thermal models against controlled measurements. The team would strengthen the CATIA-Abaqus model with bolt preload, contact, aircraft-side flexibility, and detailed cooling interfaces. The prototype would be tested with real sensor formats, cybersecurity controls, and integration into a maintenance-information system. A twelve-month pilot with two aircraft, one operator, and one maintenance organisation would then compare CADTF with a manual baseline. Independent reviewers would measure traceability, reconstruction time, model error, uncertainty coverage, false alerts, and missed alerts. Only after those results would the team consider wider application, operational claims, or standardisation activities.",
+        points: ["先用代表性数据校准电池与热模型", "完善结构边界、传感器接口和系统集成", "通过独立试点验证可追溯性、模型性能和告警负担"]
+      },
+      31: {
+        answer: "China can contribute by turning its electric-aircraft, battery-industry, low-altitude, and data-governance experience into an open evidence architecture. A bilingual dictionary and controlled data-sharing rules would make Chinese records easier for international partners to understand. China could exchange research methods, validation requirements, model cards, and pilot results while respecting national approval responsibilities. Cooperation could include joint projects on battery testing, digital twins, model credibility, and maintenance evidence. The most useful contribution is not claiming that one national framework applies everywhere, but demonstrating a transparent and testable way to connect installation identity, measurements, models, uncertainty, and review. This can support shared terminology and interoperability without weakening local safety authority.",
+        points: ["将中国的产业、适航和数据治理经验转化为可交流框架", "以双语字典、模型卡和试点结果支持国际合作", "尊重各国批准责任，推动术语与数据互操作"]
+      },
+      32: {
+        answer: "The framework is designed so raw manufacturer data can remain local while only controlled summaries, hashes, and approved evidence fields are shared. Role-based access limits who can view or change records. Signed revisions and change history distinguish controlled corrections from undocumented alterations. Evidence hashes verify integrity but do not prove airworthiness. Data-governance rules should define ownership, purpose limitation, transfer approval, retention, and audit. For cross-organisation work, organisations can exchange structured summaries rather than full proprietary datasets. This reduces privacy, security, and commercial-confidentiality risks while preserving traceability. Any real implementation would still require cybersecurity review and compliance with Chinese civil-aviation data-governance requirements.",
+        points: ["原始数据可本地保存，仅共享受控摘要和哈希", "权限、签名和变更历史控制访问与修改", "数据治理明确权属、用途、传输、保存和审计"]
+      },
+      33: {
+        answer: "Transparency is important because users must understand what an estimate means, what evidence supports it, and where the model should not be used. A score without model version, calibration, input window, uncertainty, and validity limits cannot be reviewed properly. CADTF therefore uses model cards, structured evidence packages, traceable measurements, and visible review states. A reviewer should be able to see whether a result is valid, requires review, or is blocked. Transparency also supports accountability because decisions and rationale are linked to responsible roles. It reduces automation bias and helps prevent a plausible number from being treated as an airworthiness approval. The goal is not to expose every proprietary detail, but to expose enough evidence for a valid review.",
+        points: ["透明性让用户知道估计依据、适用条件和限制", "模型卡、证据包和审查状态使结果可复核", "透明性支持责任划分并降低自动化偏见"]
+      },
+      34: {
+        answer: "Better battery evidence can support daily maintenance by showing whether a measurement, model, and approved procedure still apply to the installed pack. It can help technicians identify when a configuration change requires reassessment, when calibration is missing, and when a result should be blocked. It can also reduce time spent searching for records and reconstructing why an earlier decision was made. For operators, traceable evidence improves planning for inspection, replacement, and battery reuse. It does not tell a technician to approve a task automatically. Instead, it provides a clear advisory record and review gate that supports the approved maintenance process. This can make decisions more consistent across shifts and organisations.",
+        points: ["维修前确认测量、模型和程序是否仍适用", "缺校准或构型变化时触发复核或阻断", "减少记录检索时间并提升跨班次决策一致性"]
+      },
+      35: {
+        answer: "A digital thread and a digital twin have different functions. The digital thread is an evidence index that preserves identity, aircraft and pack records, installation, configuration, software baseline, calibration, maintenance actions, and document status. It answers where a measurement came from and which procedure governed it. The digital twin uses measurements and models to estimate battery condition, capacity, resistance, power, and uncertainty. It answers what the current state may be and whether the model is valid. The thread should remain stable and auditable, while the twin may change when models or data change. CADTF combines them because a prediction is not useful unless it remains connected to the correct physical installation and supporting evidence.",
+        points: ["数字线程保存身份、构型、来源和历史", "数字孪生根据测量更新状态与预测", "预测必须通过线程连接到实体装机和证据"]
+      },
+      36: {
+        answer: "The research limits conclusions by separating what a source establishes, what the prototype demonstrates, and what the framework recommends. The laboratory and Abaqus work are described as model-level checks with representative inputs, not experimental validation. The browser and Android systems use synthetic data and demonstrate workflow feasibility only. No claim is made about real-pack accuracy, flight safety, thermal-runaway protection, fatigue life, or airworthiness approval. A validity domain defines where a model may be used, and a blocked state prevents unsupported output. The report also states limitations, excluded uses, and required next steps. This structure prevents a successful prototype or plausible simulation from being presented as operational proof.",
+        points: ["区分资料结论、工程演示和框架建议", "合成数据只证明流程，不证明真实电池安全", "有效域、阻断状态和局限声明限制结论外推"]
+      },
+      37: {
+        answer: "A validity domain defines the chemistry, configuration, temperature, current or power range, cycle conditions, and data quality within which a model was validated. Outside that domain, the model may still produce a number, but the number is not supported. Battery behaviour changes significantly with temperature, rate, ageing, and installation. A model trained on cells may not transfer directly to a pack, and a result from one configuration may not apply after replacement. CADTF therefore treats the validity domain as a gate. Results inside the domain can be valid; results near the boundary require review; unsupported results are blocked. This prevents false confidence and makes model applicability visible to the reviewer.",
+        points: ["有效域定义模型经过验证的化学、构型和工况范围", "电芯模型不能自动迁移到电池包或新构型", "有效、需复核和阻断状态控制结果使用"]
+      },
+      38: {
+        answer: "When a pack is replaced, the system should first create a new installation record rather than copying the old record. It should compare chemistry, mass, mounting and cooling interfaces, software, sensor calibration, structural configuration, and validation conditions. Existing evidence can be inherited only if the mapping is justified and remains inside the model validity domain. If the mapping fails or important conditions differ, the system should trigger review and block release of the advisory. The final decision, rationale, and reviewer identity should be retained. A mass change may alter structural and modal results, while a thermal or interface change may alter stress or cooling. Replacement therefore creates a new evidence context, not a simple data-copy task.",
+        points: ["替换后首先建立新的装机与证据记录", "比较化学、质量、接口、软件和有效条件", "映射失败即触发复核和阻断，不能自动继承"]
+      },
+      39: {
+        answer: "Data governance makes battery evidence reliable by defining who owns data, who may access it, how it can be shared, how long it is retained, and how changes are audited. It can establish approved field names, units, provenance, timestamps, signatures, and revision rules. This reduces ambiguity between manufacturers, operators, and maintenance organisations. It also supports controlled sharing: raw commercial data can remain local while summaries and hashes are exchanged. Good governance protects privacy and security without making evidence unusable. For model-based health estimates, governance should also cover model versions, calibration, input windows, uncertainty, and review dispositions. This creates the organisational conditions needed for technical traceability to work.",
+        points: ["数据治理规定权属、访问、共享、保存和审计", "统一字段、单位、来源、签名和修订规则", "支持受控共享并覆盖模型、校准和审查记录"]
+      },
+      40: {
+        answer: "The framework could support future regulatory or standardisation work by providing a concrete evidence structure that can be tested and refined. Regulators could use the records to assess model applicability, uncertainty, and review responsibility. Standards organisations could consider common fields for battery identity, configuration mapping, model cards, calibration, evidence hashes, and review dispositions. A pilot could generate evidence for guidance or qualification criteria. The work also connects with data-governance and continuing-airworthiness practice. It does not ask regulators to approve the framework immediately. Instead, it proposes measurable requirements and pilot indicators that can inform later policy. This makes the contribution a testable input to future standards rather than an alternative regulatory system.",
+        points: ["提供可测试的模型、证据和审查字段", "为监管指导和标准制定提供试点数据", "不替代现行规章，而是形成可评估输入"]
+      },
+      41: {
+        answer: "Manufacturers can benefit because a common evidence framework clarifies how battery identity, hardware and software revisions, calibration, model validity, uncertainty, and review should be recorded. This reduces repeated explanation and ad hoc data exchange with operators and maintenance organisations. It can also improve feedback from service because field measurements and maintenance findings are returned in structured form. Manufacturers can use that evidence to refine models, detect configuration issues, and support controlled updates. The framework allows proprietary raw data to remain local while sharing controlled summaries. It also provides a route to demonstrate responsible model use without claiming automatic approval. The main benefit is better lifecycle communication and more traceable product support.",
+        points: ["统一记录电池身份、软硬件版本、校准和模型信息", "结构化现场反馈支持模型改进和构型问题发现", "原始数据可保留，受控共享提升生命周期协作"]
+      },
+      42: {
+        answer: "Operators can benefit from traceable battery evidence because it links each aircraft and installation to the measurements, configuration, software, approved procedure, and review decision behind an advisory. This reduces uncertainty after a pack or software change and helps prevent reuse of obsolete evidence. Maintenance planning becomes more consistent because past decisions and their rationale can be reconstructed. Operators can also compare trends and plan replacement or reuse with better records. The evidence does not automatically release an aircraft for service; approved maintenance procedures remain authoritative. The benefit is faster, clearer, and more accountable decisions, especially when batteries age or multiple packs move through a fleet.",
+        points: ["把飞机、装机、测量、软件和审查决定连接起来", "降低更换后误用旧证据的风险", "提升维修规划、趋势分析和决策重建效率"]
+      },
+      43: {
+        answer: "Success would be measured by whether the framework improves evidence traceability, model applicability assessment, and decision reconstruction without undermining safety responsibility. Proposed indicators include the share of sampled safety-relevant advisories linked to the correct pack, configuration, calibrated input, model version, and approved procedure. The pilot would also measure capacity and power error, interval coverage, false alerts per monitored hour, missed alerts, and reconstruction time compared with a manual baseline. Acceptance gates should be defined before testing. A blocked or review-required result should be correctly produced when evidence is incomplete. Success is not simply a high model score; it is a demonstrable improvement in reliable, auditable maintenance evidence.",
+        points: ["以可追溯性、模型性能、告警和重建时间评价", "测试前依据预期用途和安全要求设定阈值", "成功是可靠证据改进，不只是模型分数高"]
+      },
+      44: {
+        answer: "The main risks are using a model outside its validity domain, inheriting obsolete evidence after replacement, relying on uncalibrated data, and treating a health score as proof of safety. Other risks include unclear accountability, poor human factors, cyber or data-sharing failures, and integration errors with existing maintenance systems. There is also a risk that synthetic prototype results are overinterpreted or that alert burden makes staff ignore warnings. The framework manages these risks through configuration mapping, model cards, calibration records, uncertainty, review gates, role-based access, signed revisions, and blocked states. A controlled pilot should test false alerts, missed alerts, reconstruction time, data governance, and human factors before any operational claim.",
+        points: ["有效域误用、旧证据继承和未校准数据是核心风险", "责任不清、告警过载和系统集成也会影响安全", "通过映射、门控、权限、签名和试点控制风险"]
+      },
+      45: {
+        answer: "Human oversight is preserved by designing the system as a review gate rather than an autonomous decision-maker. The digital components can calculate, compare, flag missing evidence, and propose a state, but a qualified person must accept, reject, or escalate the advice. Role-based access defines who can perform each action. Signed decisions and change history make responsibility visible. The model card and uncertainty record help the reviewer understand the basis and limitations of the result. Training and human-factors testing should check whether users understand valid, review-required, and blocked states. Automation should reduce routine work without removing the authority and accountability of approved organisations.",
+        points: ["模型只提出建议和门控状态，不能批准维修", "角色权限、签名和变更历史明确人工责任", "培训和人为因素测试确保人员理解有效、复核和阻断状态"]
+      },
+      46: {
+        answer: "The research requires knowledge from airworthiness and systems engineering, battery science, data engineering, digital twins, artificial intelligence, human factors, cybersecurity, and regulation. Airworthiness knowledge defines the safety boundary and continuing-airworthiness process. Battery and thermal science define degradation and hazards. Data engineering and digital twins provide identity, records, models, and evidence packaging. Human factors determine whether reviewers understand uncertainty and blocked states. Cybersecurity and data governance protect evidence and control access. Policy and standards knowledge connects the solution to Chinese and international practice. The contribution comes from integrating these disciplines around one maintenance advisory record rather than optimising only one technical component.",
+        points: ["涉及适航、电池、数据、数字孪生和模型保证", "还需要人因、网络安全、法规与标准知识", "跨学科集成围绕一条维修建议记录展开"]
+      },
+      47: {
+        answer: "The framework can adapt because it separates the evidence contract from a specific battery model or algorithm. New chemistries can be introduced through updated chemistry fields, model cards, calibration data, and validity domains. New sensors can be added if their units, provenance, calibration, and uncertainty are defined. Machine-learning or physics-informed models can replace or supplement existing estimators, provided training and test data are separated at the appropriate level and validity is documented. Evidence packages and review gates remain stable even when the underlying model changes. This modular approach reduces redesign effort. Any new technology still requires verification, validation, cybersecurity review, and human acceptance before it can support maintenance advice.",
+        points: ["证据契约与具体模型解耦，可替换化学体系和算法", "新传感器需定义单位、来源、校准和不确定度", "新技术仍须验证、确认、安全审查和人工接受"]
+      },
+      48: {
+        answer: "Public trust depends on transparent safety and maintenance practice, not only on the fact that an aircraft is electric. Traceable battery evidence can improve trust by showing that ageing, replacement, software changes, and temperature effects are managed through controlled review. It also makes it easier to explain why a maintenance decision was made and who was responsible. Conversely, unexplained model scores or hidden data could reduce trust if an incident occurred. Public communication should avoid claiming that the framework guarantees safety or environmental benefit. The strongest message is that electric aviation is being supported by accountable evidence, clear limitations, and human review. Trust is built through verifiable process and responsible claims.",
+        points: ["可追溯证据让电池变化和维护决定更透明", "避免把模型分数宣传为安全或环保保证", "公众信任来自可验证流程、局限说明和人工责任"]
+      },
+      49: {
+        answer: "The research could become a practical tool through several stages. First, the bilingual dictionary and record schema could become a controlled specification. Second, the model card, calibration, uncertainty, and review fields could be implemented as APIs or templates in a maintenance-information system. Third, the prototype could be integrated with real sensor and maintenance data in a pilot. Fourth, the evaluation indicators could form a service-level test or qualification package. Finally, results could inform industry guidance or standards. The service should remain advisory and preserve approved maintenance authority. A practical product would therefore combine a data contract, model-validation workflow, evidence repository, review interface, and reporting functions.",
+        points: ["把字典和记录模式发展为受控规范或接口", "将模型卡、校准、不确定性接入维修系统", "通过试点形成工具、服务或标准输入"]
+      },
+      50: {
+        answer: "The most original aspect is treating evidence continuity as a first-class requirement that connects a physical battery installation to configuration, measurements, model validity, uncertainty, evidence integrity, and authorised review. Many studies address battery algorithms, digital twins, or airworthiness rules separately. This work integrates them through a concrete maintenance advisory record and a validity-gated workflow. It also provides a bilingual evidence dictionary and an engineering demonstration that shows how configuration and thermal changes trigger review. The evidence supporting this claim is the policy and standards review, the requirements analysis, the CATIA-Abaqus model, the prototype tests, and structured synthetic evidence packages. The originality is the auditable connection among these elements, not a claim of proven operational effectiveness.",
+        points: ["原创点在证据连续性的一体化设计", "把装机、构型、模型、不确定度和审查连接起来", "创新由需求分析、工程仿真实例和原型共同支持"]
+      }
+    };
+
+    const CATEGORY_KEYWORDS = {
+      "选题与意义": [
+        "problem", "important", "electric", "battery", "airworthiness", "evidence",
+        "safety", "issue", "impact", "未来", "问题", "电池", "适航", "证据", "安全", "意义"
+      ],
+      "中国措施与帮助": [
+        "China", "policy", "standard", "CAAC", "industry", "operator", "regulator",
+        "low-altitude", "cooperation", "中国", "政策", "标准", "民航", "产业", "监管", "低空经济", "帮助"
+      ],
+      "方法与证据": [
+        "method", "analysis", "evidence", "simulation", "prototype", "validate",
+        "credible", "result", "scope", "方法", "分析", "证据", "仿真", "原型", "验证", "可信", "结果", "范围"
+      ],
+      "创新与局限": [
+        "innovation", "difference", "limitation", "risk", "responsibility", "transparency",
+        "accountability", "change", "创新", "区别", "局限", "风险", "责任", "透明", "追责", "可靠性"
+      ],
+      "应用与未来": [
+        "application", "implementation", "pilot", "international", "future", "technology",
+        "cooperation", "ten years", "应用", "实施", "试点", "国际", "未来", "技术", "合作", "十年"
+      ]
+    };
+
+    const STRUCTURE_MARKERS = [
+      "first", "second", "third", "finally", "because", "therefore", "for example",
+      "however", "in conclusion", "my answer", "three", "首先", "其次", "再次", "最后",
+      "因为", "所以", "例如", "但是", "总之", "第一", "第二", "第三"
+    ];
+
+    const EVIDENCE_MARKERS = [
+      "policy", "standard", "data", "evidence", "simulation", "prototype", "framework",
+      "experiment", "model", "result", "percent", "%", "policy", "政策", "标准", "数据",
+      "证据", "仿真", "原型", "框架", "实验", "模型", "结果", "百分比"
+    ];
+
+    const FILLER_WORDS = [
+      "um", "uh", "er", "like", "you know", "actually", "basically",
+      "嗯", "呃", "额", "那个", "然后就是"
+    ];
+
+    let TRANSFORMERS_MODULE_CACHE = null;
+    let EMBEDDING_PIPELINE_CACHE = null;
+
+    const state = {
+      view: "exam",
+      phase: "entry",
+      mode: "two",
+      session: [],
+      index: 0,
+      answerers: [],
+      currentAnswerer: "",
+      roster: ["选手一", "选手二", "选手三", "选手四"],
+      remaining: 60,
+      answerElapsed: 0,
+      timerId: null,
+      speed: 1,
+      activeBankCategory: "全部",
+      pendingView: null,
+      language: "en-US",
+      audioStream: null,
+      mediaRecorder: null,
+      audioChunks: [],
+      recognition: null,
+      transcriptFinal: "",
+      transcriptInterim: "",
+      recognitionMessage: "",
+      recordings: [],
+      analyses: [],
+      answerStartedAt: null,
+      simulatedAnswerSeconds: 0,
+      audioMetrics: null,
+      audioMetricsTimer: null,
+      audioContext: null,
+      noRepeat: true,
+      whisperStatus: [],
+      sessionId: null,
+      sessionCreatedAt: null,
+      history: [],
+      historyObjectUrls: []
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function iconRefresh() {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function formatTime(seconds) {
+      const whole = Math.max(0, Math.ceil(seconds));
+      const minutes = Math.floor(whole / 60);
+      const secs = whole % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function currentQuestion() {
+      return state.session[state.index];
+    }
+
+    function clearTimer() {
+      if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+    }
+
+    function stopRecognition() {
+      if (state.recognition) {
+        try {
+          state.recognition.stop();
+        } catch (error) {
+          // The recognition service may already be stopped.
+        }
+        state.recognition = null;
+      }
+    }
+
+    function stopAudioStream() {
+      if (state.audioStream) {
+        state.audioStream.getTracks().forEach((track) => track.stop());
+        state.audioStream = null;
+      }
+    }
+
+    async function ensureMicrophone() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("当前浏览器不支持麦克风录音，请使用最新版 Chrome。");
+      }
+      if (!state.audioStream || state.audioStream.getTracks().every((track) => track.readyState === "ended")) {
+        state.audioStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+      }
+      return state.audioStream;
+    }
+
+    function updateLiveTranscript() {
+      const box = $("#live-transcript-text");
+      if (!box) return;
+      const text = `${state.transcriptFinal} ${state.transcriptInterim}`.trim();
+      box.textContent = text || state.recognitionMessage || "等待识别到语音内容。";
+    }
+
+    async function startAudioCapture() {
+      const stream = await ensureMicrophone();
+      state.audioChunks = [];
+      state.transcriptFinal = "";
+      state.transcriptInterim = "";
+      state.recognitionMessage = "";
+      state.audioMetrics = {
+        samples: 0,
+        voicedSamples: 0,
+        totalRms: 0,
+        currentSilenceSeconds: 0,
+        maxSilenceSeconds: 0,
+        pauseCount: 0
+      };
+      updateLiveTranscript();
+
+      const preferredTypes = ["audio/webm;codecs=opus", "audio/webm", "audio/ogg;codecs=opus"];
+      const mimeType = preferredTypes.find((type) => window.MediaRecorder && MediaRecorder.isTypeSupported(type));
+      try {
+        state.mediaRecorder = mimeType
+          ? new MediaRecorder(stream, { mimeType })
+          : new MediaRecorder(stream);
+      } catch (error) {
+        throw new Error("无法启动录音设备，请检查浏览器麦克风权限。");
+      }
+      state.mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          state.audioChunks.push(event.data);
+        }
+      };
+      state.mediaRecorder.start(250);
+
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass && stream.getAudioTracks().length) {
+          state.audioContext = new AudioContextClass();
+          const source = state.audioContext.createMediaStreamSource(stream);
+          const analyser = state.audioContext.createAnalyser();
+          analyser.fftSize = 1024;
+          const samples = new Float32Array(analyser.fftSize);
+          source.connect(analyser);
+          const sampleInterval = 200;
+          state.audioMetricsTimer = window.setInterval(() => {
+            analyser.getFloatTimeDomainData(samples);
+            let sumSquares = 0;
+            for (let index = 0; index < samples.length; index += 1) {
+              sumSquares += samples[index] * samples[index];
+            }
+            const rms = Math.sqrt(sumSquares / samples.length);
+            const metrics = state.audioMetrics;
+            metrics.samples += 1;
+            metrics.totalRms += rms;
+            if (rms >= 0.015) {
+              metrics.voicedSamples += 1;
+              if (metrics.currentSilenceSeconds >= 0.7) {
+                metrics.pauseCount += 1;
+              }
+              metrics.currentSilenceSeconds = 0;
+            } else {
+              metrics.currentSilenceSeconds += sampleInterval / 1000;
+              metrics.maxSilenceSeconds = Math.max(
+                metrics.maxSilenceSeconds,
+                metrics.currentSilenceSeconds
+              );
+            }
+          }, sampleInterval);
+        }
+      } catch (error) {
+        state.audioMetrics = null;
+      }
+
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (Recognition) {
+        const recognition = new Recognition();
+        recognition.lang = state.language;
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+        recognition.onresult = (event) => {
+          let finalText = "";
+          let interimText = "";
+          for (let index = 0; index < event.results.length; index += 1) {
+            const transcript = event.results[index][0].transcript;
+            if (event.results[index].isFinal) {
+              finalText += `${transcript} `;
+            } else {
+              interimText += `${transcript} `;
+            }
+          }
+          state.transcriptFinal = finalText.trim();
+          state.transcriptInterim = interimText.trim();
+          updateLiveTranscript();
+        };
+        recognition.onerror = (event) => {
+          if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+            state.recognitionMessage = "浏览器未获得语音识别权限，录音仍会保留。";
+            updateLiveTranscript();
+          }
+        };
+        try {
+          recognition.start();
+          state.recognition = recognition;
+        } catch (error) {
+          state.recognition = null;
+        }
+      } else {
+        state.recognitionMessage = "当前浏览器不支持自动转写，录音结束后可手动输入回答文本。";
+        updateLiveTranscript();
+      }
+    }
+
+    function stopAudioCapture() {
+      return new Promise((resolve) => {
+        stopRecognition();
+        const mediaRecorder = state.mediaRecorder;
+        if (!mediaRecorder || mediaRecorder.state === "inactive") {
+          resolve(null);
+          return;
+        }
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          if (state.audioMetricsTimer) {
+            clearInterval(state.audioMetricsTimer);
+            state.audioMetricsTimer = null;
+          }
+          if (state.audioContext) {
+            state.audioContext.close().catch(() => {});
+            state.audioContext = null;
+          }
+          const blob = state.audioChunks.length
+            ? new Blob(state.audioChunks, { type: mediaRecorder.mimeType || "audio/webm" })
+            : null;
+          resolve(blob);
+        };
+        mediaRecorder.addEventListener("stop", finish, { once: true });
+        window.setTimeout(finish, 1600);
+        try {
+          mediaRecorder.stop();
+        } catch (error) {
+          finish();
+        }
+      });
+    }
+
+    function spokenUnitCount(text) {
+      const englishWords = (text.match(/[A-Za-z]+(?:['-][A-Za-z]+)*/g) || []).length;
+      const chineseCharacters = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+      return englishWords + chineseCharacters;
+    }
+
+    const CONTENT_STOP_WORDS = new Set([
+      "about", "after", "also", "and", "are", "because", "been", "before",
+      "being", "between", "both", "can", "could", "does", "during", "each",
+      "from", "have", "into", "more", "most", "must", "not", "only", "other",
+      "our", "should", "some", "such", "than", "that", "their", "them", "then",
+      "there", "these", "they", "this", "those", "through", "under", "using",
+      "very", "was", "were", "what", "when", "where", "which", "while", "with",
+      "would", "your"
+    ]);
+
+    function contentWords(text) {
+      return new Set(
+        (String(text || "").toLowerCase().match(/[a-z]{3,}/g) || [])
+          .filter((word) => !CONTENT_STOP_WORDS.has(word))
+      );
+    }
+
+    function overlapRatio(leftSet, rightSet) {
+      if (!leftSet.size || !rightSet.size) return 0;
+      return [...leftSet].filter((item) => rightSet.has(item)).length / Math.min(leftSet.size, 45);
+    }
+
+    function standardAnswerMatch(transcript, standardAnswer) {
+      const answerWords = contentWords(transcript);
+      const standardWords = contentWords(standardAnswer);
+      const lexical = Math.min(1, overlapRatio(answerWords, standardWords) * 1.35);
+      const standardSentences = String(standardAnswer)
+        .split(/(?<=[.!?])\s+/)
+        .map((sentence) => contentWords(sentence))
+        .filter((words) => words.size >= 3);
+      const coveredSentences = standardSentences.filter((words) => {
+        const ratio = overlapRatio(words, answerWords);
+        return ratio >= 0.18;
+      }).length;
+      const sentenceCoverage = standardSentences.length
+        ? coveredSentences / standardSentences.length
+        : 0;
+      return {
+        score: clampScore((lexical * 0.55 + sentenceCoverage * 0.45) * 100),
+        lexical: clampScore(lexical * 100),
+        sentenceCoverage: clampScore(sentenceCoverage * 100),
+        coveredSentences,
+        totalSentences: standardSentences.length
+      };
+    }
+
+    function clampScore(value) {
+      return Math.max(0, Math.min(100, Math.round(value)));
+    }
+
+    function keywordIncludes(text, keyword) {
+      const normalized = text.toLowerCase();
+      const key = keyword.toLowerCase();
+      if (/^[a-z][a-z\s-]*$/i.test(key)) {
+        return normalized.includes(key);
+      }
+      return normalized.includes(key);
+    }
+
+    function analyzeAnswer(question, transcript, duration, audioMetrics = null, semanticScore = null) {
+      const cleanTranscript = String(transcript || "").replace(/\s+/g, " ").trim();
+      const units = spokenUnitCount(cleanTranscript);
+      const categoryKeywords = CATEGORY_KEYWORDS[question.category] || [];
+      const coveredKeywords = categoryKeywords.filter((keyword) => keywordIncludes(cleanTranscript, keyword));
+      const missingKeywords = categoryKeywords.filter((keyword) => !coveredKeywords.includes(keyword)).slice(0, 8);
+      const durationMinutes = Math.max(duration / 60, 0.35);
+      const rate = units / durationMinutes;
+      const structureHits = STRUCTURE_MARKERS.filter((marker) => keywordIncludes(cleanTranscript, marker));
+      const evidenceHits = EVIDENCE_MARKERS.filter((marker) => keywordIncludes(cleanTranscript, marker));
+      const fillerHits = FILLER_WORDS.filter((marker) => keywordIncludes(cleanTranscript, marker));
+      const uniqueEnglish = new Set((cleanTranscript.toLowerCase().match(/[a-z]+/g) || []));
+      const uniqueChinese = new Set((cleanTranscript.match(/[\u4e00-\u9fff]/g) || []));
+      const lexicalVariety = units ? (uniqueEnglish.size + uniqueChinese.size) / units : 0;
+      const timeControl = clampScore(
+        duration >= 95 && duration <= 138
+          ? 100
+          : duration < 95
+            ? (duration / 95) * 100
+            : 100 - (duration - 138) * 2
+      );
+
+      if (!cleanTranscript) {
+        const samples = Math.max(1, audioMetrics?.samples || 0);
+        const voiceActivity = clampScore(((audioMetrics?.voicedSamples || 0) / samples) * 100);
+        const averageVolume = samples ? (audioMetrics?.totalRms || 0) / samples : 0;
+        const volumeScore = audioMetrics
+          ? clampScore(100 - Math.min(70, Math.abs(averageVolume - 0.045) * 900))
+          : 45;
+        const pauseScore = audioMetrics
+          ? clampScore(
+              100 -
+              Math.min(55, (audioMetrics.pauseCount || 0) * 9) -
+              Math.min(30, (audioMetrics.maxSilenceSeconds || 0) * 13)
+            )
+          : 45;
+        const audioOnlyScore = clampScore(
+          voiceActivity * 0.3 +
+          volumeScore * 0.25 +
+          pauseScore * 0.25 +
+          timeControl * 0.2
+        );
+        return {
+          score: audioOnlyScore,
+          mode: "audio",
+          metrics: [
+            { label: "语音活跃度", value: voiceActivity },
+            { label: "音量稳定性", value: volumeScore },
+            { label: "停顿控制", value: pauseScore },
+            { label: "时间控制", value: timeControl },
+            { label: "内容评分", value: 0 }
+          ],
+          coveredKeywords: [],
+          missingKeywords: categoryKeywords.slice(0, 8),
+          strengths: [
+            audioOnlyScore >= 60
+              ? "录音中的语音活动、音量和停顿整体正常。"
+              : "录音已经保存，可以回放检查语音、语速和停顿。"
+          ],
+          improvements: [
+            "当前评分只分析声音表现，尚未识别到回答文本。",
+            "可在下方粘贴回答内容并重新分析，或启用本地 Whisper 增强转写。"
+          ],
+          transcript: "",
+          units: 0,
+          rate: 0,
+          duration,
+          audioMetrics
+        };
+      }
+
+      const targetUnits = state.language === "zh-CN" ? 340 : 180;
+      const lengthScore = clampScore((units / targetUnits) * 100);
+      const keywordScore = categoryKeywords.length ? (coveredKeywords.length / categoryKeywords.length) * 100 : 60;
+      const standardReference = STANDARD_ANSWERS[question.id]?.answer || "";
+      const standardMatch = standardAnswerMatch(cleanTranscript, standardReference);
+      const finalStandardScore = semanticScore === null
+        ? standardMatch.score
+        : clampScore(standardMatch.score * 0.65 + semanticScore * 0.35);
+      const questionWords = new Set(
+        question.en
+          .toLowerCase()
+          .match(/[a-z]{4,}/g)
+          ?.filter((word) => !["what", "why", "how", "does", "your", "this", "that", "with", "from", "about", "work"].includes(word)) || []
+      );
+      const transcriptWords = new Set(cleanTranscript.toLowerCase().match(/[a-z]{4,}/g) || []);
+      const questionOverlap = questionWords.size
+        ? [...questionWords].filter((word) => transcriptWords.has(word)).length / questionWords.size
+        : 0.5;
+      const relevance = cleanTranscript
+        ? clampScore(
+            finalStandardScore * 0.45 +
+            keywordScore * 0.2 +
+            questionOverlap * 100 * 0.18 +
+            lengthScore * 0.17
+          )
+        : 0;
+      const structure = clampScore(
+        Math.min(100, 20 + structureHits.length * 18 + Math.min(30, units / 6))
+      );
+      const evidenceDepth = clampScore(Math.min(100, evidenceHits.length * 18 + lexicalVariety * 65 + Math.min(18, units / 10)));
+      const idealMin = state.language === "zh-CN" ? 170 : 90;
+      const idealMax = state.language === "zh-CN" ? 340 : 195;
+      let deliveryRateScore = 100;
+      if (rate < idealMin) deliveryRateScore = clampScore((rate / idealMin) * 100);
+      if (rate > idealMax) deliveryRateScore = clampScore(100 - ((rate - idealMax) / idealMax) * 70);
+      const delivery = cleanTranscript
+        ? clampScore(deliveryRateScore * 0.62 + (100 - Math.min(100, fillerHits.length * 18)) * 0.38)
+        : 0;
+      const score = clampScore(
+        finalStandardScore * 0.48 +
+        keywordScore * 0.06 +
+        structure * 0.14 +
+        evidenceDepth * 0.16 +
+        delivery * 0.09 +
+        timeControl * 0.07
+      );
+
+      const strengths = [];
+      const improvements = [];
+      if (finalStandardScore >= 58) strengths.push("回答覆盖了标准答案中的多项核心要点。");
+      else improvements.push("对照标准答案补充核心结论、机制和中国意义，避免只回答表面概念。");
+      if (keywordScore >= 55) strengths.push("题目类别关键词覆盖较充分。");
+      else improvements.push("增加题目中的关键术语和标准答案中的核心表达。");
+      if (structureHits.length >= 2) strengths.push("使用了清楚的逻辑标记，听众容易跟随回答结构。");
+      else improvements.push("采用“观点、三条理由、结论”或“首先、其次、最后”的结构。");
+      if (evidenceHits.length >= 3) strengths.push("回答包含政策、数据、模型、案例或研究证据。");
+      else improvements.push("增加具体证据，例如措施名称、研究结论、工程结果或中国实践。");
+      if (rate >= idealMin && rate <= idealMax) strengths.push(`语速约为 ${Math.round(rate)} 单位/分钟，处于适合表达的区间。`);
+      else if (rate < idealMin) improvements.push("有效内容偏少或语速偏慢，需要增加信息量并减少停顿。");
+      else improvements.push("语速偏快，建议减少信息密度，让关键词和逻辑更清楚。");
+      if (fillerHits.length === 0) strengths.push("口癖较少，表达整体较干净。");
+      else improvements.push(`检测到 ${fillerHits.length} 类口头填充词，练习时用短停顿替代“嗯、呃、like”。`);
+      if (duration < 95) improvements.push("回答时间偏短，至少用约 100 秒形成完整论证。");
+      if (duration > 135) improvements.push("回答接近或超过时长上限，应提前建立结尾句。");
+      if (!strengths.length) strengths.push("录音已经完整保留，可先通过回放确认语音和停顿。");
+      if (!improvements.length) improvements.push("保持当前结构，进一步增加中国实践和国际意义的例子。");
+
+      return {
+        score,
+        mode: "content",
+        metrics: [
+          { label: "标准答案匹配", value: finalStandardScore },
+          { label: "主题关键词", value: keywordScore },
+          { label: "结构逻辑", value: structure },
+          { label: "证据深度", value: evidenceDepth },
+          { label: "表达清晰度", value: delivery },
+          { label: "时间控制", value: timeControl }
+        ],
+        relevance,
+        standardMatch,
+        semanticScore,
+        coveredKeywords,
+        missingKeywords,
+        strengths,
+        improvements,
+        transcript: cleanTranscript,
+        units,
+        rate,
+        duration,
+        audioMetrics
+      };
+    }
+
+    function getRoster() {
+      const values = [1, 2, 3, 4]
+        .map((index) => $(`#member-${index}`).value.trim())
+        .filter(Boolean);
+      state.roster = values.length ? values : ["选手一"];
+      return state.roster;
+    }
+
+    function readUsedQuestionIds() {
+      try {
+        const value = JSON.parse(localStorage.getItem("cadtf_used_question_ids") || "[]");
+        return Array.isArray(value) ? value.filter((id) => Number.isInteger(id)) : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function writeUsedQuestionIds(ids) {
+      try {
+        localStorage.setItem("cadtf_used_question_ids", JSON.stringify([...new Set(ids)]));
+      } catch (error) {
+        // localStorage may be unavailable in a restricted browser context.
+      }
+    }
+
+    function drawNonRepeatingQuestions(count) {
+      let usedIds = readUsedQuestionIds();
+      let available = QUESTIONS.filter((question) => !usedIds.includes(question.id));
+      let reset = false;
+      if (available.length < count) {
+        usedIds = [];
+        available = [...QUESTIONS];
+        reset = true;
+      }
+      const selected = shuffle(available).slice(0, count);
+      writeUsedQuestionIds([...usedIds, ...selected.map((question) => question.id)]);
+      return { selected, reset };
+    }
+
+    function resetQuestionPool() {
+      writeUsedQuestionIds([]);
+      openModal(
+        "不重复题库已重置",
+        "下一轮模拟将重新从全部 50 道题中抽取。",
+        "知道了",
+        () => {}
+      );
+    }
+
+    function setView(view) {
+      if (["prep", "requesting", "answer", "analysis"].includes(state.phase)) {
+        state.pendingView = view;
+        openModal(
+          "模拟考试正在进行",
+          "当前进入的是正式计时的受控流程。离开模拟页面会结束本轮考试，是否继续？",
+          "结束并离开",
+          () => {
+            clearTimer();
+            stopRecognition();
+            stopAudioStream();
+            state.phase = "entry";
+            state.session = [];
+            state.index = 0;
+            state.answerers = [];
+            state.currentAnswerer = "";
+            state.recordings = [];
+            state.analyses = [];
+            showEntry();
+            applyView(view);
+            state.pendingView = null;
+          }
+        );
+        return;
+      }
+      applyView(view);
+    }
+
+    function applyView(view) {
+      state.view = view;
+      $$(".view").forEach((element) => element.classList.toggle("active", element.id === `view-${view}`));
+      $$(".nav button").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
+      if (view === "bank") {
+        renderBank();
+      }
+      if (view === "history") {
+        renderHistory();
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showEntry() {
+      clearTimer();
+      stopRecognition();
+      stopAudioStream();
+      state.phase = "entry";
+      $("#exam-entry").classList.remove("hidden");
+      $("#exam-room").classList.add("hidden");
+      $("#exam-info").classList.add("hidden");
+      $("#exam-summary").classList.add("hidden");
+      $("#exam-mode-label").textContent = "随机 2 题";
+      renderExamRoom();
+    }
+
+    async function startExam(questions = null) {
+      clearTimer();
+      try {
+        await ensureMicrophone();
+      } catch (error) {
+        openModal(
+          "需要麦克风权限",
+          error.message || "请允许浏览器使用麦克风后重新开始模拟。",
+          "我知道了",
+          () => {}
+        );
+        return;
+      }
+      const roster = getRoster();
+      state.language = $("#recognition-language").value;
+      state.noRepeat = $("#no-repeat-mode").checked;
+      let poolReset = false;
+      if (questions) {
+        state.session = questions;
+      } else if (state.noRepeat) {
+        const draw = drawNonRepeatingQuestions(2);
+        state.session = draw.selected;
+        poolReset = draw.reset;
+      } else {
+        state.session = shuffle(QUESTIONS).slice(0, 2);
+      }
+      state.mode = state.session.length === 1 ? "single" : "two";
+      state.index = 0;
+      state.answerers = new Array(state.session.length).fill("");
+      state.recordings = new Array(state.session.length).fill(null);
+      state.analyses = new Array(state.session.length).fill(null);
+      state.whisperStatus = new Array(state.session.length).fill("");
+      if (poolReset) {
+        state.whisperStatus[0] = "50 道题已完成一轮，不重复题库已自动重置。";
+      }
+      state.sessionId = window.crypto?.randomUUID
+        ? crypto.randomUUID()
+        : `session-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      state.sessionCreatedAt = new Date().toISOString();
+      state.currentAnswerer = roster[0] || "";
+      $("#exam-entry").classList.add("hidden");
+      $("#exam-info").classList.add("hidden");
+      $("#exam-summary").classList.add("hidden");
+      $("#exam-room").classList.remove("hidden");
+      $("#exam-mode-label").textContent = state.mode === "single" ? "单题练习" : "随机 2 题";
+      if (!questions && state.noRepeat) {
+        $("#exam-mode-label").textContent = "不重复 2 题";
+      }
+      startPrep();
+    }
+
+    function renderExamRoom() {
+      const question = currentQuestion();
+      const count = state.session.length;
+      $("#exam-question-count").textContent = `第 ${Math.min(state.index + 1, count)} / ${count} 题`;
+      $("#current-q-side").textContent = `${Math.min(state.index + 1, count)} / ${count}`;
+      $("#progress-bar").style.width = `${(state.index / count) * 100}%`;
+      $("#progress-text").textContent = `第 ${Math.min(state.index + 1, count)} 题`;
+      $("#answerer-label").textContent = state.currentAnswerer || "未选择";
+      if (!question) return;
+    }
+
+    function renderMemberOptions() {
+      return state.roster
+        .map(
+          (name) =>
+            `<button type="button" class="member-chip ${name === state.currentAnswerer ? "active" : ""}" data-member="${escapeHtml(name)}">${escapeHtml(name)}</button>`
+        )
+        .join("");
+    }
+
+    function startPrep() {
+      clearTimer();
+      state.phase = "prep";
+      state.remaining = 60;
+      renderExamRoom();
+      renderQuestion("prep");
+      const tick = () => {
+        state.remaining -= 1;
+        updateTimerDisplay();
+        if (state.remaining <= 0) {
+          clearTimer();
+          startAnswer();
+        }
+      };
+      updateTimerDisplay();
+      state.timerId = setInterval(tick, 1000 / state.speed);
+    }
+
+    function renderQuestion(mode) {
+      const question = currentQuestion();
+      if (!question) return;
+      $("#exam-phase-title").textContent = mode === "prep" ? "准备阶段" : "作答阶段";
+      $("#timer-box").classList.toggle("answer", mode === "answer");
+      $("#record-state").classList.toggle("hidden", mode !== "answer");
+      $("#exam-content").innerHTML = `
+        <span class="phase-label ${mode === "answer" ? "answer" : ""}">
+          <i data-lucide="${mode === "answer" ? "mic" : "book-open-check"}"></i>
+          ${mode === "answer" ? "正在录音并实时转写" : "60 秒准备，可确定作答成员"}
+        </span>
+        <h2 class="question-en">${escapeHtml(question.en)}</h2>
+        <p class="question-zh">${escapeHtml(question.zh)}</p>
+        <div class="answer-area">
+          <span class="member-label">选择本题作答成员</span>
+          <div id="member-options" class="member-options">${renderMemberOptions()}</div>
+        </div>
+        ${
+          mode === "answer"
+            ? `
+              <div class="live-transcript">
+                <i data-lucide="captions"></i>
+                <div><strong>实时转写：</strong><span id="live-transcript-text">等待识别到语音内容。</span></div>
+              </div>
+              <div class="notice" style="margin-top: 18px;"><i data-lucide="circle-alert"></i><div>计时结束后自动停止录音，并进行内容评分和结构分析。正式模式请保持 1× 速度。</div></div>
+            `
+            : `<div class="notice" style="margin-top: 22px;"><i data-lucide="lightbulb"></i><div>准备阶段结束后自动开始作答。可在准备阶段选择队员，作答开始后不可暂停。</div></div>`
+        }
+      `;
+      $("#exam-action-buttons").innerHTML =
+        mode === "prep"
+          ? `
+            <button class="btn secondary" id="skip-prep-btn"><i data-lucide="fast-forward"></i>跳过准备</button>
+            <button class="btn" id="manual-answer-btn"><i data-lucide="play"></i>开始作答</button>
+          `
+          : `
+            <button class="btn danger" id="end-answer-btn"><i data-lucide="square"></i>结束录音并评分</button>
+          `;
+      bindQuestionActions();
+      iconRefresh();
+    }
+
+    function bindQuestionActions() {
+      $$("#member-options .member-chip").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.currentAnswerer = button.dataset.member;
+          $("#answerer-label").textContent = state.currentAnswerer;
+          $$("#member-options .member-chip").forEach((chip) => chip.classList.toggle("active", chip === button));
+        });
+      });
+      const skip = $("#skip-prep-btn");
+      const manual = $("#manual-answer-btn");
+      const end = $("#end-answer-btn");
+      if (skip) skip.addEventListener("click", startAnswer);
+      if (manual) manual.addEventListener("click", startAnswer);
+      if (end) end.addEventListener("click", () => finishQuestion());
+    }
+
+    function updateTimerDisplay() {
+      if (state.phase === "prep") {
+        $("#timer-value").textContent = formatTime(state.remaining);
+        $("#timer-label").textContent = "准备倒计时";
+      } else if (state.phase === "answer") {
+        $("#timer-value").textContent = formatTime(Math.max(0, state.remaining));
+        $("#timer-label").textContent = state.remaining < 0 ? "15 秒缓冲" : "正式作答计时";
+      }
+    }
+
+    function runAnswerTimer() {
+      clearTimer();
+      const tick = () => {
+        state.remaining -= 1;
+        state.simulatedAnswerSeconds = Math.min(135, 120 - Math.max(state.remaining, 0) + Math.max(0, -state.remaining));
+        updateTimerDisplay();
+        if (state.remaining < 0 && Math.abs(state.remaining) >= 15) {
+          clearTimer();
+          finishQuestion();
+        }
+      };
+      state.timerId = setInterval(tick, 1000 / state.speed);
+    }
+
+    async function startAnswer() {
+      clearTimer();
+      if (state.phase !== "prep") return;
+      state.phase = "requesting";
+      try {
+        await startAudioCapture();
+      } catch (error) {
+        state.phase = "prep";
+        renderQuestion("prep");
+        openModal(
+          "无法开始录音",
+          error.message || "请检查麦克风权限和设备后重试。",
+          "我知道了",
+          () => {}
+        );
+        return;
+      }
+      state.phase = "answer";
+      state.remaining = 120;
+      state.answerStartedAt = performance.now();
+      state.simulatedAnswerSeconds = 0;
+      renderExamRoom();
+      renderQuestion("answer");
+      updateTimerDisplay();
+      runAnswerTimer();
+    }
+
+    async function finishQuestion() {
+      if (state.phase !== "answer") return;
+      clearTimer();
+      if (!state.currentAnswerer) {
+        state.currentAnswerer = state.roster[0] || "选手一";
+      }
+      state.answerers[state.index] = state.currentAnswerer;
+      state.simulatedAnswerSeconds = Math.max(
+        state.simulatedAnswerSeconds,
+        Math.min(135, 120 - Math.max(state.remaining, 0) + Math.max(0, -state.remaining))
+      );
+      state.phase = "analysis";
+      $("#exam-phase-title").textContent = "分析阶段";
+      $("#record-state").classList.add("hidden");
+      $("#timer-box").classList.remove("answer");
+      $("#timer-value").textContent = "···";
+      $("#timer-label").textContent = "正在分析";
+      $("#exam-content").innerHTML = `
+        <div class="upload-state">
+          <div>
+            <div class="upload-icon"><i data-lucide="check-check"></i></div>
+            <h2>第 ${state.index + 1} 题录音完成</h2>
+            <p>正在保存音频、整理转写并分析回答内容。</p>
+          </div>
+        </div>
+      `;
+      $("#exam-action-buttons").innerHTML = "";
+      $("#progress-bar").style.width = `${((state.index + 1) / state.session.length) * 100}%`;
+      iconRefresh();
+      const blob = await stopAudioCapture();
+      const audioUrl = blob ? URL.createObjectURL(blob) : "";
+      const transcript = `${state.transcriptFinal} ${state.transcriptInterim}`.trim();
+      const analysis = analyzeAnswer(
+        currentQuestion(),
+        transcript,
+        Math.max(1, state.simulatedAnswerSeconds || 1),
+        state.audioMetrics
+      );
+      state.recordings[state.index] = {
+        blob,
+        audioUrl,
+        mimeType: blob?.type || "audio/webm",
+        transcript,
+        analysis,
+        duration: analysis.duration
+      };
+      state.analyses[state.index] = analysis;
+      renderAnalysis();
+      persistCurrentSession().catch(() => {});
+      if (blob) {
+        runWhisperForCurrentQuestion();
+      } else if (transcript && state.language !== "zh-CN") {
+        refineStandardMatch(state.index);
+      }
+    }
+
+    function setWhisperStatus(index, message) {
+      state.whisperStatus[index] = message;
+      if (state.index === index && state.phase === "analysis") {
+        const status = $("#whisper-status");
+        if (status) {
+          status.textContent = message;
+        }
+      }
+    }
+
+    function createWhisperInput(decodedBuffer) {
+      const channelCount = decodedBuffer.numberOfChannels;
+      const length = decodedBuffer.length;
+      const output = new Float32Array(length);
+      for (let channel = 0; channel < channelCount; channel += 1) {
+        const data = decodedBuffer.getChannelData(channel);
+        for (let index = 0; index < length; index += 1) {
+          output[index] += data[index] / channelCount;
+        }
+      }
+      return output;
+    }
+
+    async function getTransformersModule() {
+      if (!TRANSFORMERS_MODULE_CACHE) {
+        TRANSFORMERS_MODULE_CACHE = await import(
+          "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3"
+        );
+        TRANSFORMERS_MODULE_CACHE.env.allowLocalModels = false;
+        TRANSFORMERS_MODULE_CACHE.env.useBrowserCache = true;
+        TRANSFORMERS_MODULE_CACHE.env.remoteHost = "https://hf-mirror.com/";
+      }
+      return TRANSFORMERS_MODULE_CACHE;
+    }
+
+    async function getEmbeddingPipeline() {
+      if (!EMBEDDING_PIPELINE_CACHE) {
+        const module = await getTransformersModule();
+        EMBEDDING_PIPELINE_CACHE = await module.pipeline(
+          "feature-extraction",
+          "Xenova/all-MiniLM-L6-v2",
+          { dtype: "q8" }
+        );
+      }
+      return EMBEDDING_PIPELINE_CACHE;
+    }
+
+    function cosineSimilarity(left, right) {
+      let dot = 0;
+      let leftNorm = 0;
+      let rightNorm = 0;
+      for (let index = 0; index < left.length; index += 1) {
+        dot += left[index] * right[index];
+        leftNorm += left[index] * left[index];
+        rightNorm += right[index] * right[index];
+      }
+      if (!leftNorm || !rightNorm) return 0;
+      return dot / (Math.sqrt(leftNorm) * Math.sqrt(rightNorm));
+    }
+
+    async function refineStandardMatch(index) {
+      const record = state.recordings[index];
+      const question = state.session[index];
+      const transcript = record?.transcript || state.analyses[index]?.transcript || "";
+      if (
+        !record ||
+        !question ||
+        transcript.length < 25 ||
+        state.language === "zh-CN" ||
+        record.semanticAttempted
+      ) {
+        return;
+      }
+      record.semanticAttempted = true;
+      setWhisperStatus(index, "正在计算回答与标准答案的语义相似度。");
+      if (state.index === index && state.phase === "analysis") {
+        renderAnalysis();
+        persistCurrentSession().catch(() => {});
+      }
+      persistCurrentSession().catch(() => {});
+      try {
+        const extractor = await getEmbeddingPipeline();
+        const standardAnswer = STANDARD_ANSWERS[question.id]?.answer || "";
+        const output = await extractor([transcript, standardAnswer], {
+          pooling: "mean",
+          normalize: true
+        });
+        const vectors = output.tolist();
+        const semanticScore = clampScore(cosineSimilarity(vectors[0], vectors[1]) * 100);
+        const nextAnalysis = analyzeAnswer(
+          question,
+          transcript,
+          record.duration || 1,
+          record.analysis?.audioMetrics,
+          semanticScore
+        );
+        record.analysis = nextAnalysis;
+        state.analyses[index] = nextAnalysis;
+        setWhisperStatus(index, `语义匹配完成，标准答案相似度为 ${semanticScore}%。`);
+      } catch (error) {
+        setWhisperStatus(index, "语义模型暂不可用，当前分数基于标准答案要点和关键词匹配。");
+      }
+      if (state.index === index && state.phase === "analysis") {
+        renderAnalysis();
+      }
+      persistCurrentSession().catch(() => {});
+    }
+
+    async function transcribeWithWhisper(blob) {
+      setWhisperStatus(state.index, "正在加载本地 Whisper 语音模型，首次使用可能需要数十秒。");
+      const module = await getTransformersModule();
+      const { pipeline } = module;
+      const modelId = state.language === "zh-CN"
+        ? "onnx-community/whisper-tiny"
+        : "onnx-community/whisper-tiny.en";
+      const transcriber = await pipeline(
+        "automatic-speech-recognition",
+        modelId,
+        { dtype: "q8" }
+      );
+      setWhisperStatus(state.index, "模型已加载，正在转写本题录音。");
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)({
+        sampleRate: 16000
+      });
+      const arrayBuffer = await blob.arrayBuffer();
+      const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+      await audioContext.close();
+      const audio = createWhisperInput(decoded);
+      const options = {
+        chunk_length_s: 30,
+        stride_length_s: 5
+      };
+      if (state.language === "zh-CN") {
+        options.language = "chinese";
+        options.task = "transcribe";
+      }
+      const result = await transcriber(audio, options);
+      return String(result?.text || "").trim();
+    }
+
+    async function runWhisperForCurrentQuestion() {
+      const index = state.index;
+      const record = state.recordings[index];
+      if (!record?.blob || record.whisperAttempted) return;
+      record.whisperAttempted = true;
+      record.whisperState = "running";
+      setWhisperStatus(index, "实时转写为空，正在启动本地 Whisper 增强转写。");
+      renderAnalysis();
+      try {
+        const transcript = await transcribeWithWhisper(record.blob);
+        record.whisperState = "done";
+        if (transcript) {
+          record.transcript = transcript;
+          const nextAnalysis = analyzeAnswer(
+            state.session[index],
+            transcript,
+            record.duration || 1,
+            record.analysis?.audioMetrics
+          );
+          record.analysis = nextAnalysis;
+          state.analyses[index] = nextAnalysis;
+          setWhisperStatus(index, "增强转写完成，已重新评分。");
+          if (state.language !== "zh-CN") {
+            refineStandardMatch(index);
+          }
+        } else {
+          setWhisperStatus(index, "增强转写未识别到有效文本，请手动补充回答内容。");
+        }
+      } catch (error) {
+        record.whisperState = "failed";
+        setWhisperStatus(index, "增强转写失败，可检查网络或手动输入回答文本。");
+      }
+      if (state.index === index && state.phase === "analysis") {
+        renderAnalysis();
+      }
+      persistCurrentSession().catch(() => {});
+    }
+
+    function renderAnalysis() {
+      const question = currentQuestion();
+      const record = state.recordings[state.index];
+      const analysis = state.analyses[state.index] || record?.analysis;
+      if (!question || !analysis) return;
+      const metrics = analysis.metrics
+        .map(
+          (metric) => `
+            <div class="metric-row">
+              <span>${escapeHtml(metric.label)}</span>
+              <div class="metric-track"><div class="metric-fill" style="width:${metric.value}%"></div></div>
+              <strong>${metric.value}</strong>
+            </div>
+          `
+        )
+        .join("");
+      const covered = analysis.coveredKeywords.length
+        ? analysis.coveredKeywords
+            .map((keyword) => `<span class="keyword-chip covered">${escapeHtml(keyword)}</span>`)
+            .join("")
+        : `<span class="keyword-chip">暂未识别到类别关键词</span>`;
+      const missing = analysis.missingKeywords.length
+        ? analysis.missingKeywords
+            .map((keyword) => `<span class="keyword-chip">${escapeHtml(keyword)}</span>`)
+            .join("")
+        : `<span class="keyword-chip covered">关键词覆盖较充分</span>`;
+      const strengths = analysis.strengths.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      const improvements = analysis.improvements.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      const audio = record?.audioUrl
+        ? `
+          <audio controls src="${record.audioUrl}"></audio>
+          <a class="btn secondary" href="${record.audioUrl}" download="第${state.index + 1}题录音.webm">
+            <i data-lucide="download"></i>下载录音
+          </a>
+        `
+        : `<span class="keyword-chip">未生成可播放录音</span>`;
+      const whisperStatus = state.whisperStatus[state.index] || (
+        analysis.mode === "audio"
+          ? "尚未获得文本转写，当前显示音频表现评分。"
+          : "内容转写完成，当前显示录音内容评分。"
+      );
+      const standardReference = STANDARD_ANSWERS[question.id] || { answer: "", points: [] };
+      const standardPoints = standardReference.points
+        .map((point) => `<li>${escapeHtml(point)}</li>`)
+        .join("");
+
+      $("#timer-value").textContent = String(analysis.score);
+      $("#timer-label").textContent = analysis.mode === "audio" ? "音频表现评分" : "内容评分";
+      $("#exam-content").innerHTML = `
+        <span class="phase-label"><i data-lucide="chart-no-axes-column"></i>本题录音分析</span>
+        <div class="analysis-layout" style="margin-top: 18px;">
+          <aside class="score-panel">
+            <div class="score-circle"><div><strong>${analysis.score}</strong><span>综合评分</span></div></div>
+            <div style="color:var(--muted); font-size:12px;">有效内容 ${analysis.units} 单位</div>
+            <div style="color:var(--muted); font-size:12px; margin-top:3px;">时长 ${formatTime(analysis.duration)}</div>
+          </aside>
+          <div class="analysis-main">
+            <div class="analysis-block">
+              <h3>${analysis.mode === "audio" ? "音频表现评分" : "内容分项评分"}</h3>
+              <div id="whisper-status" style="margin-bottom:10px; color:var(--muted); font-size:12px;">${escapeHtml(whisperStatus)}</div>
+              <div class="metric-list">${metrics}</div>
+            </div>
+            <div class="analysis-block">
+              <h3>录音与转写</h3>
+              <div class="audio-row">${audio}</div>
+              <textarea id="analysis-transcript" class="transcript-box" style="margin-top:12px;" placeholder="自动转写结果会显示在这里，也可以手动粘贴或修正回答文本。">${escapeHtml(analysis.transcript)}</textarea>
+              <div class="button-row" style="margin-top:10px;">
+                <button class="btn secondary" id="reanalyze-btn"><i data-lucide="refresh-cw"></i>重新分析</button>
+                ${
+                  analysis.mode === "audio" && !record?.whisperAttempted
+                    ? `<button class="btn secondary" id="start-whisper-btn"><i data-lucide="sparkles"></i>启动增强转写</button>`
+                    : ""
+                }
+              </div>
+            </div>
+            <div class="analysis-block">
+              <h3>关键词覆盖</h3>
+              <div class="keyword-chips">${covered}</div>
+              <div style="margin-top:10px; color:var(--muted); font-size:12px;">建议补充：</div>
+              <div class="keyword-chips" style="margin-top:6px;">${missing}</div>
+            </div>
+            <div class="analysis-block">
+              <h3>标准答案与得分要点</h3>
+              <div style="color:#26384a; font-family:'Times New Roman',Georgia,serif; font-size:14px; line-height:1.8;">${escapeHtml(standardReference.answer)}</div>
+              <strong style="display:block; margin-top:12px; color:var(--teal);">中文要点</strong>
+              <ul class="analysis-list">${standardPoints}</ul>
+            </div>
+            <div class="analysis-block">
+              <h3>结果分析</h3>
+              <div class="analysis-columns">
+                <div>
+                  <strong style="color:var(--teal);">表现较好</strong>
+                  <ul class="analysis-list">${strengths}</ul>
+                </div>
+                <div>
+                  <strong style="color:var(--amber);">需要改进</strong>
+                  <ul class="analysis-list">${improvements}</ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      $("#exam-action-buttons").innerHTML = `
+        <button class="btn" id="next-question-btn">
+          <i data-lucide="${state.index + 1 >= state.session.length ? "send" : "chevron-right"}"></i>
+          ${state.index + 1 >= state.session.length ? "完成并交卷" : "进入下一题"}
+        </button>
+      `;
+      $("#next-question-btn").addEventListener("click", advanceAfterAnalysis);
+      $("#reanalyze-btn").addEventListener("click", () => {
+        const transcript = $("#analysis-transcript").value.trim();
+        const nextAnalysis = analyzeAnswer(
+          question,
+          transcript,
+          record?.duration || 1,
+          record?.analysis?.audioMetrics
+        );
+        state.analyses[state.index] = nextAnalysis;
+        if (state.recordings[state.index]) {
+          state.recordings[state.index].analysis = nextAnalysis;
+          state.recordings[state.index].transcript = transcript;
+          state.recordings[state.index].semanticAttempted = false;
+        }
+        renderAnalysis();
+        persistCurrentSession().catch(() => {});
+        if (transcript && state.language !== "zh-CN") {
+          refineStandardMatch(state.index);
+        }
+      });
+      const whisperButton = $("#start-whisper-btn");
+      if (whisperButton) {
+        whisperButton.addEventListener("click", runWhisperForCurrentQuestion);
+      }
+      iconRefresh();
+    }
+
+    function advanceAfterAnalysis() {
+      state.index += 1;
+      if (state.index >= state.session.length) {
+        showExamInfo();
+      } else {
+        state.currentAnswerer = state.roster[0] || "";
+        startPrep();
+      }
+    }
+
+    function showExamInfo() {
+      clearTimer();
+      state.phase = "info";
+      $("#exam-room").classList.add("hidden");
+      $("#exam-info").classList.remove("hidden");
+      $("#info-form").innerHTML = state.session
+        .map(
+          (question, index) => `
+            <div class="info-item">
+              <strong>第 ${index + 1} 题作答成员</strong>
+              <div style="color: var(--muted); font-size: 12px; margin-top: 6px;">${escapeHtml(question.zh)}</div>
+              <select data-answerer-index="${index}">
+                ${state.roster
+                  .map(
+                    (name) =>
+                      `<option value="${escapeHtml(name)}" ${state.answerers[index] === name ? "selected" : ""}>${escapeHtml(name)}</option>`
+                  )
+                  .join("")}
+              </select>
+            </div>
+          `
+        )
+        .join("");
+      iconRefresh();
+    }
+
+    async function submitExam() {
+      $$("#info-form select").forEach((select) => {
+        const index = Number(select.dataset.answererIndex);
+        state.answerers[index] = select.value;
+      });
+      stopRecognition();
+      stopAudioStream();
+      state.phase = "summary";
+      $("#exam-info").classList.add("hidden");
+      $("#exam-summary").classList.remove("hidden");
+      const completedScores = state.analyses.filter(Boolean).map((analysis) => analysis.score);
+      const average = completedScores.length
+        ? Math.round(completedScores.reduce((sum, score) => sum + score, 0) / completedScores.length)
+        : 0;
+      $("#summary-subtitle").textContent = `本轮共完成 ${state.session.length} 道题，平均评分 ${average} 分。`;
+      $("#summary-list").innerHTML = state.session
+        .map(
+          (question, index) => {
+            const analysis = state.analyses[index];
+            const record = state.recordings[index];
+            const strengths = analysis?.strengths?.[0] || "暂无分析";
+            const improvement = analysis?.improvements?.[0] || "暂无建议";
+            return `
+            <div class="summary-row">
+              <div class="summary-no">${index + 1}</div>
+              <div>
+                <div class="summary-q">${escapeHtml(question.en)}</div>
+                <div style="color: var(--muted); font-size: 12px; margin-top: 5px;">${escapeHtml(question.zh)}</div>
+                <div class="summary-analysis"><strong>表现：</strong>${escapeHtml(strengths)}</div>
+                <div class="summary-analysis"><strong>改进：</strong>${escapeHtml(improvement)}</div>
+                ${
+                  record?.audioUrl
+                    ? `<audio class="summary-audio" controls src="${record.audioUrl}"></audio>`
+                    : ""
+                }
+              </div>
+              <div class="summary-meta">
+                作答成员<br><strong>${escapeHtml(state.answerers[index] || "未填写")}</strong>
+                <div class="summary-score" style="margin-top:10px;">${analysis?.score ?? 0}</div>
+                <small>综合评分</small>
+              </div>
+            </div>
+          `;
+          }
+        )
+        .join("");
+      iconRefresh();
+      $("#save-state").innerHTML = `<i data-lucide="loader-circle"></i>正在保存答题记录`;
+      iconRefresh();
+      try {
+        await persistCurrentSession();
+        $("#save-state").innerHTML = `<i data-lucide="database"></i>录音和报告已保存到答题记录`;
+      } catch (error) {
+        $("#save-state").innerHTML = `<i data-lucide="circle-alert"></i>本地保存失败：${escapeHtml(error.message)}`;
+      }
+      iconRefresh();
+      await renderHistory();
+    }
+
+    function openRecordDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open("cadtf_exam_history", 1);
+        request.onupgradeneeded = () => {
+          const database = request.result;
+          if (!database.objectStoreNames.contains("sessions")) {
+            database.createObjectStore("sessions", { keyPath: "id" });
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error("无法打开本地记录数据库"));
+      });
+    }
+
+    async function withRecordStore(mode, operation) {
+      const database = await openRecordDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction("sessions", mode);
+        const store = transaction.objectStore("sessions");
+        let result;
+        try {
+          result = operation(store);
+        } catch (error) {
+          database.close();
+          reject(error);
+          return;
+        }
+        transaction.oncomplete = () => {
+          database.close();
+          resolve(result);
+        };
+        transaction.onerror = () => {
+          database.close();
+          reject(transaction.error || new Error("本地记录操作失败"));
+        };
+      });
+    }
+
+    function currentSessionRecord() {
+      const scores = state.analyses.filter(Boolean).map((analysis) => analysis.score);
+      const averageScore = scores.length
+        ? Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length)
+        : 0;
+      return {
+        id: state.sessionId,
+        createdAt: state.sessionCreatedAt,
+        language: state.language,
+        mode: state.mode,
+        averageScore,
+        questions: state.session
+          .map((question, index) => {
+            const recording = state.recordings[index];
+            const analysis = state.analyses[index] || recording?.analysis || null;
+            return {
+              questionId: question.id,
+              category: question.category,
+              en: question.en,
+              zh: question.zh,
+              answerer: state.answerers[index] || "",
+              duration: analysis?.duration || recording?.duration || 0,
+              transcript: analysis?.transcript || recording?.transcript || "",
+              score: analysis?.score || 0,
+              mode: analysis?.mode || "audio",
+              metrics: analysis?.metrics || [],
+              coveredKeywords: analysis?.coveredKeywords || [],
+              missingKeywords: analysis?.missingKeywords || [],
+              strengths: analysis?.strengths || [],
+              improvements: analysis?.improvements || [],
+              audioBlob: recording?.blob || null,
+              mimeType: recording?.mimeType || "audio/webm"
+            };
+          })
+          .filter((question) => question.audioBlob || question.transcript || question.score)
+      };
+    }
+
+    async function persistCurrentSession() {
+      if (!state.sessionId) return;
+      const record = currentSessionRecord();
+      await withRecordStore("readwrite", (store) => store.put(record));
+    }
+
+    async function readHistoryRecords() {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const database = await openRecordDatabase();
+          const transaction = database.transaction("sessions", "readonly");
+          const request = transaction.objectStore("sessions").getAll();
+          request.onsuccess = () => {
+            const records = (request.result || []).sort(
+              (left, right) => new Date(right.createdAt) - new Date(left.createdAt)
+            );
+            database.close();
+            resolve(records);
+          };
+          request.onerror = () => {
+            database.close();
+            reject(request.error || new Error("无法读取答题记录"));
+          };
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
+
+    async function deleteHistoryRecord(id) {
+      await withRecordStore("readwrite", (store) => store.delete(id));
+      await renderHistory();
+    }
+
+    async function clearHistoryRecords() {
+      await withRecordStore("readwrite", (store) => store.clear());
+      await renderHistory();
+    }
+
+    function revokeHistoryObjectUrls() {
+      state.historyObjectUrls.forEach((url) => URL.revokeObjectURL(url));
+      state.historyObjectUrls = [];
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "未知时间";
+      return new Intl.DateTimeFormat("zh-CN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(new Date(value));
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        if (!blob) {
+          resolve("");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+        reader.onerror = () => reject(reader.error || new Error("录音读取失败"));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      anchor.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    function safeFilename(value) {
+      return String(value).replace(/[\\/:*?"<>|]+/g, "-").slice(0, 90);
+    }
+
+    async function exportSessionReport(id) {
+      const records = await readHistoryRecords();
+      const record = records.find((item) => item.id === id);
+      if (!record) return;
+      const exportData = {
+        reportType: "CADTF在线问答模拟报告",
+        exportedAt: new Date().toISOString(),
+        session: {
+          id: record.id,
+          createdAt: record.createdAt,
+          language: record.language,
+          averageScore: record.averageScore,
+          questions: []
+        }
+      };
+      for (const question of record.questions) {
+        exportData.session.questions.push({
+          questionId: question.questionId,
+          category: question.category,
+          questionEn: question.en,
+          questionZh: question.zh,
+          answerer: question.answerer,
+          duration: question.duration,
+          transcript: question.transcript,
+          score: question.score,
+          mode: question.mode,
+          metrics: question.metrics,
+          coveredKeywords: question.coveredKeywords,
+          missingKeywords: question.missingKeywords,
+          strengths: question.strengths,
+          improvements: question.improvements,
+          audio: {
+            mimeType: question.mimeType,
+            base64: await blobToBase64(question.audioBlob)
+          }
+        });
+      }
+      downloadBlob(
+        new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" }),
+        `${safeFilename(`答题报告_${formatDateTime(record.createdAt)}`)}.json`
+      );
+    }
+
+    async function exportAllHistory() {
+      const records = await readHistoryRecords();
+      if (!records.length) {
+        openModal("暂无记录", "当前还没有可以导出的答题记录。", "知道了", () => {});
+        return;
+      }
+      const exportData = {
+        reportType: "CADTF在线问答模拟全部记录",
+        exportedAt: new Date().toISOString(),
+        sessions: []
+      };
+      for (const record of records) {
+        exportData.sessions.push({
+          id: record.id,
+          createdAt: record.createdAt,
+          language: record.language,
+          averageScore: record.averageScore,
+          questions: await Promise.all(
+            record.questions.map(async (question) => ({
+              questionId: question.questionId,
+              category: question.category,
+              questionEn: question.en,
+              questionZh: question.zh,
+              answerer: question.answerer,
+              duration: question.duration,
+              transcript: question.transcript,
+              score: question.score,
+              mode: question.mode,
+              metrics: question.metrics,
+              coveredKeywords: question.coveredKeywords,
+              missingKeywords: question.missingKeywords,
+              strengths: question.strengths,
+              improvements: question.improvements,
+              audio: {
+                mimeType: question.mimeType,
+                base64: await blobToBase64(question.audioBlob)
+              }
+            }))
+          )
+        });
+      }
+      downloadBlob(
+        new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" }),
+        `全部答题记录_${new Date().toISOString().slice(0, 10)}.json`
+      );
+    }
+
+    function reportMetricRows(question) {
+      return (question.metrics || [])
+        .map(
+          (metric) => `
+            <tr>
+              <td>${escapeHtml(metric.label)}</td>
+              <td>${metric.value}</td>
+            </tr>
+          `
+        )
+        .join("");
+    }
+
+    function buildSessionReportHtml(record) {
+      const questionSections = record.questions
+        .map((question, index) => {
+          const reference = STANDARD_ANSWERS[question.questionId] || { answer: "", points: [] };
+          return `
+            <section class="question-report">
+              <h2>第 ${index + 1} 题</h2>
+              <div class="question-en">${escapeHtml(question.en)}</div>
+              <div class="question-zh">${escapeHtml(question.zh)}</div>
+              <div class="meta-line">
+                作答成员：${escapeHtml(question.answerer || "未填写")}　
+                本题得分：<strong>${question.score}</strong>　
+                回答时长：${formatTime(question.duration || 0)}　
+                评分模式：${question.mode === "content" ? "内容评分" : "音频表现评分"}
+              </div>
+              <h3>标准答案</h3>
+              <p class="standard-answer">${escapeHtml(reference.answer)}</p>
+              <h3>中文得分要点</h3>
+              <ul>${reference.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+              <h3>作答转写</h3>
+              <p>${escapeHtml(question.transcript || "未获得文本转写，当前报告仅包含音频表现评分。")}</p>
+              <h3>分项评分</h3>
+              <table class="metric-table"><tbody>${reportMetricRows(question)}</tbody></table>
+              <h3>关键词覆盖</h3>
+              <p>${escapeHtml((question.coveredKeywords || []).join("、") || "暂未识别到类别关键词")}</p>
+              <h3>表现较好</h3>
+              <ul>${(question.strengths || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+              <h3>需要改进</h3>
+              <ul>${(question.improvements || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+              <p class="audio-note">该题原始录音已保存在网页的答题记录模块中，可单独回放或下载。</p>
+            </section>
+          `;
+        })
+        .join("");
+      return `<!doctype html>
+        <html lang="zh-CN">
+        <head>
+          <meta charset="utf-8">
+          <title>在线问答模拟分析报告</title>
+          <style>
+            @page { size: A4; margin: 16mm; }
+            body { color:#17232e; font-family:"Microsoft YaHei","SimSun",sans-serif; font-size:11px; line-height:1.65; }
+            h1 { margin:0 0 6px; color:#17365d; font-size:23px; }
+            h2 { margin:22px 0 8px; padding-bottom:5px; border-bottom:2px solid #177d78; color:#17365d; font-size:18px; }
+            h3 { margin:15px 0 5px; color:#254f76; font-size:13px; }
+            p { margin:5px 0; }
+            ul { margin:5px 0; padding-left:20px; }
+            li + li { margin-top:3px; }
+            .cover-meta { color:#667586; margin-bottom:18px; }
+            .average { color:#177d78; font-size:28px; font-weight:900; }
+            .question-report { page-break-before:always; }
+            .question-report:first-of-type { page-break-before:auto; }
+            .question-en { color:#17365d; font-family:"Times New Roman",Georgia,serif; font-size:17px; font-weight:700; }
+            .question-zh { color:#667586; margin-top:3px; }
+            .meta-line { margin:9px 0; padding:7px 9px; background:#eef3f8; }
+            .standard-answer { padding:9px; border-left:4px solid #177d78; background:#f4f8fb; }
+            .metric-table { width:70%; border-collapse:collapse; }
+            .metric-table td { padding:4px 7px; border:1px solid #d8e1ea; }
+            .metric-table td:last-child { width:60px; text-align:right; font-weight:700; }
+            .audio-note { margin-top:12px; color:#667586; font-size:10px; }
+          </style>
+        </head>
+        <body>
+          <h1>在线问答模拟分析报告</h1>
+          <div class="cover-meta">
+            生成时间：${escapeHtml(formatDateTime(record.createdAt))}<br>
+            作答模式：${record.language === "zh-CN" ? "中文识别" : "English识别"}<br>
+            平均分：<span class="average">${record.averageScore}</span>
+          </div>
+          ${questionSections}
+        </body>
+        </html>`;
+    }
+
+    async function exportSessionPdf(id) {
+      const reportWindow = window.open("", "_blank");
+      if (!reportWindow) {
+        openModal("无法打开报告", "请允许浏览器打开弹出窗口后重试。", "知道了", () => {});
+        return;
+      }
+      reportWindow.document.write("<p style='font-family:sans-serif'>正在生成报告...</p>");
+      const records = await readHistoryRecords();
+      const record = records.find((item) => item.id === id);
+      if (!record) {
+        reportWindow.close();
+        return;
+      }
+      reportWindow.document.open();
+      reportWindow.document.write(buildSessionReportHtml(record));
+      reportWindow.document.close();
+      window.setTimeout(() => reportWindow.print(), 600);
+    }
+
+    async function exportAllPdf() {
+      const reportWindow = window.open("", "_blank");
+      if (!reportWindow) {
+        openModal("无法打开报告", "请允许浏览器打开弹出窗口后重试。", "知道了", () => {});
+        return;
+      }
+      reportWindow.document.write("<p style='font-family:sans-serif'>正在生成报告...</p>");
+      const records = await readHistoryRecords();
+      if (!records.length) {
+        reportWindow.close();
+        openModal("暂无记录", "当前还没有可以导出的答题记录。", "知道了", () => {});
+        return;
+      }
+      const combined = records
+        .map((record) => {
+          const html = buildSessionReportHtml(record);
+          return html.split("<body>")[1].split("</body>")[0];
+        })
+        .join("<div style='page-break-after:always'></div>");
+      reportWindow.document.open();
+      reportWindow.document.write(`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>全部在线问答分析报告</title><style>
+        @page{size:A4;margin:16mm}body{font-family:"Microsoft YaHei","SimSun",sans-serif;font-size:11px;line-height:1.65;color:#17232e}
+        h1{margin:0 0 6px;color:#17365d;font-size:23px}h2{margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid #177d78;color:#17365d;font-size:18px}
+        h3{margin:15px 0 5px;color:#254f76;font-size:13px}p{margin:5px 0}ul{margin:5px 0;padding-left:20px}.question-report{page-break-before:always}
+        .question-en{color:#17365d;font-family:"Times New Roman",Georgia,serif;font-size:17px;font-weight:700}.question-zh{color:#667586}.meta-line{margin:9px 0;padding:7px 9px;background:#eef3f8}
+        .standard-answer{padding:9px;border-left:4px solid #177d78;background:#f4f8fb}.metric-table{width:70%;border-collapse:collapse}.metric-table td{padding:4px 7px;border:1px solid #d8e1ea}
+        .average{color:#177d78;font-size:28px;font-weight:900}.audio-note{color:#667586;font-size:10px}
+      </style></head><body><h1>全部在线问答模拟分析报告</h1>${combined}</body></html>`);
+      reportWindow.document.close();
+      window.setTimeout(() => reportWindow.print(), 800);
+    }
+
+    async function renderHistory() {
+      revokeHistoryObjectUrls();
+      const container = $("#history-list");
+      if (!container) return;
+      let records;
+      try {
+        records = await readHistoryRecords();
+      } catch (error) {
+        container.innerHTML = `<div class="empty-state">读取本地记录失败：${escapeHtml(error.message)}</div>`;
+        return;
+      }
+      state.history = records;
+      $("#history-count").textContent = `共 ${records.length} 次记录`;
+      if (!records.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i data-lucide="archive"></i>
+            <p>暂无答题记录。完成一次模拟并交卷后，录音和报告会保存在这里。</p>
+          </div>
+        `;
+        iconRefresh();
+        return;
+      }
+      container.innerHTML = records
+        .map((record) => {
+          const questionBlocks = record.questions
+            .map((question, index) => {
+              const audioUrl = question.audioBlob ? URL.createObjectURL(question.audioBlob) : "";
+              if (audioUrl) state.historyObjectUrls.push(audioUrl);
+              const strengths = question.strengths?.[0] || "暂无";
+              const improvement = question.improvements?.[0] || "暂无";
+              const reference = STANDARD_ANSWERS[question.questionId] || { answer: "", points: [] };
+              return `
+                <div class="history-question">
+                  <h4>${index + 1}. ${escapeHtml(question.en)}</h4>
+                  <p>${escapeHtml(question.zh)}</p>
+                  <p style="margin-top:7px;"><strong>作答成员：</strong>${escapeHtml(question.answerer || "未填写")}　<strong>评分：</strong>${question.score}　<strong>时长：</strong>${formatTime(question.duration || 0)}</p>
+                  <p style="margin-top:7px;"><strong>转写：</strong>${escapeHtml(question.transcript || "未获得文本转写")}</p>
+                  <p style="margin-top:7px;"><strong>表现：</strong>${escapeHtml(strengths)}</p>
+                  <p style="margin-top:7px;"><strong>改进：</strong>${escapeHtml(improvement)}</p>
+                  <details style="margin-top:9px;">
+                    <summary style="cursor:pointer; color:var(--teal); font-weight:800;">查看标准答案与得分要点</summary>
+                    <div style="margin-top:8px; color:#26384a; line-height:1.75;">${escapeHtml(reference.answer)}</div>
+                    <ul class="analysis-list" style="margin-top:7px;">${reference.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+                  </details>
+                  ${
+                    audioUrl
+                      ? `<audio class="summary-audio" controls src="${audioUrl}"></audio>
+                         <button class="btn secondary history-audio-download" data-record-id="${record.id}" data-question-index="${index}" style="margin-top:8px;">
+                           <i data-lucide="download"></i>下载录音
+                         </button>`
+                      : ""
+                  }
+                </div>
+              `;
+            })
+            .join("");
+          return `
+            <article class="history-card">
+              <div class="history-head">
+                <div>
+                  <div class="history-title">${escapeHtml(formatDateTime(record.createdAt))}</div>
+                  <div class="history-meta">${record.questions.length} 道题 · ${record.language === "zh-CN" ? "中文模式" : "English模式"} · 平均分</div>
+                </div>
+                <div class="history-score">${record.averageScore}</div>
+              </div>
+              <div class="history-body">${questionBlocks}</div>
+              <div class="history-actions">
+                <button class="btn secondary history-pdf" data-record-id="${record.id}"><i data-lucide="file-text"></i>PDF报告</button>
+                <button class="btn secondary history-export" data-record-id="${record.id}"><i data-lucide="file-down"></i>导出报告</button>
+                <button class="btn danger history-delete" data-record-id="${record.id}"><i data-lucide="trash-2"></i>删除记录</button>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+      $$(".history-export").forEach((button) => {
+        button.addEventListener("click", () => exportSessionReport(button.dataset.recordId));
+      });
+      $$(".history-pdf").forEach((button) => {
+        button.addEventListener("click", () => exportSessionPdf(button.dataset.recordId));
+      });
+      $$(".history-delete").forEach((button) => {
+        button.addEventListener("click", () => {
+          openModal(
+            "删除答题记录",
+            "删除后录音和分析报告无法恢复。",
+            "确认删除",
+            () => deleteHistoryRecord(button.dataset.recordId)
+          );
+        });
+      });
+      $$(".history-audio-download").forEach((button) => {
+        button.addEventListener("click", () => {
+          const record = state.history.find((item) => item.id === button.dataset.recordId);
+          const question = record?.questions?.[Number(button.dataset.questionIndex)];
+          if (question?.audioBlob) {
+            downloadBlob(question.audioBlob, `第${Number(button.dataset.questionIndex) + 1}题录音.webm`);
+          }
+        });
+      });
+      iconRefresh();
+    }
+
+    function renderBank() {
+      const categories = ["全部", ...new Set(QUESTIONS.map((question) => question.category))];
+      $("#category-tabs").innerHTML = categories
+        .map(
+          (category) =>
+            `<button class="${state.activeBankCategory === category ? "active" : ""}" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`
+        )
+        .join("");
+      const filtered =
+        state.activeBankCategory === "全部"
+          ? QUESTIONS
+          : QUESTIONS.filter((question) => question.category === state.activeBankCategory);
+      $("#bank-count").textContent = `共 ${filtered.length} 题`;
+      $("#bank-grid").innerHTML = filtered
+        .map(
+          (question) => `
+            <article class="question-card">
+              <div class="question-card-head">
+                <span class="q-id">QUESTION ${String(question.id).padStart(2, "0")}</span>
+                <span class="q-category">${escapeHtml(question.category)}</span>
+              </div>
+              <h3>${escapeHtml(question.en)}</h3>
+              <p>${escapeHtml(question.zh)}</p>
+              <button class="btn secondary practice-question" data-question-id="${question.id}">
+                <i data-lucide="play"></i>单题模拟
+              </button>
+              <button class="btn ghost reference-question" data-question-id="${question.id}" style="margin-top:8px;">
+                <i data-lucide="book-open"></i>查看参考答案
+              </button>
+            </article>
+          `
+        )
+        .join("");
+      $$("#category-tabs button").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.activeBankCategory = button.dataset.category;
+          renderBank();
+        });
+      });
+      $$(".practice-question").forEach((button) => {
+        button.addEventListener("click", () => {
+          const question = QUESTIONS.find((item) => item.id === Number(button.dataset.questionId));
+          applyView("exam");
+          startExam([question]);
+        });
+      });
+      $$(".reference-question").forEach((button) => {
+        button.addEventListener("click", () => {
+          const question = QUESTIONS.find((item) => item.id === Number(button.dataset.questionId));
+          openReferenceModal(question);
+        });
+      });
+      iconRefresh();
+    }
+
+    function openReferenceModal(question) {
+      const reference = STANDARD_ANSWERS[question.id] || { answer: "", points: [] };
+      $("#modal-title").textContent = `Question ${String(question.id).padStart(2, "0")} 参考答案`;
+      $("#modal-body").innerHTML = `
+        <div style="color:var(--navy); font-family:'Times New Roman',Georgia,serif; font-size:17px; font-weight:700; line-height:1.45;">${escapeHtml(question.en)}</div>
+        <div style="color:var(--muted); margin-top:6px;">${escapeHtml(question.zh)}</div>
+        <div style="margin-top:15px; line-height:1.8; color:#26384a;">${escapeHtml(reference.answer)}</div>
+        <strong style="display:block; margin-top:14px; color:var(--teal);">得分要点</strong>
+        <ul class="analysis-list">${reference.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+      `;
+      $("#modal").classList.add("show");
+      $("#modal-cancel").textContent = "关闭";
+      $("#modal-confirm").textContent = "单题模拟";
+      $("#modal-confirm").onclick = () => {
+        $("#modal").classList.remove("show");
+        applyView("exam");
+        startExam([question]);
+      };
+      $("#modal-cancel").onclick = () => $("#modal").classList.remove("show");
+    }
+
+    function openModal(title, body, confirmText, onConfirm) {
+      $("#modal-title").textContent = title;
+      $("#modal-body").textContent = body;
+      $("#modal-confirm").textContent = confirmText || "确定";
+      $("#modal").classList.add("show");
+      $("#modal-confirm").onclick = () => {
+        $("#modal").classList.remove("show");
+        onConfirm();
+      };
+      $("#modal-cancel").onclick = () => {
+        $("#modal").classList.remove("show");
+        state.pendingView = null;
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function bindGlobalEvents() {
+      $$(".nav button").forEach((button) => {
+        button.addEventListener("click", () => setView(button.dataset.view));
+      });
+      $("#start-exam-btn").addEventListener("click", () => startExam());
+      $("#reset-question-pool").addEventListener("click", resetQuestionPool);
+      $("#submit-exam-btn").addEventListener("click", submitExam);
+      $("#restart-exam-btn").addEventListener("click", () => {
+        clearTimer();
+        showEntry();
+      });
+      $("#summary-bank-btn").addEventListener("click", () => applyView("bank"));
+      $("#export-summary-pdf").addEventListener("click", () => exportSessionPdf(state.sessionId));
+      $("#export-all-history").addEventListener("click", exportAllHistory);
+      $("#export-all-pdf").addEventListener("click", exportAllPdf);
+      $("#clear-history").addEventListener("click", () => {
+        openModal(
+          "清空全部答题记录",
+          "所有录音和分析报告都会被永久删除。",
+          "确认清空",
+          clearHistoryRecords
+        );
+      });
+      $("#speed-select").addEventListener("change", (event) => {
+        state.speed = Number(event.target.value);
+        if (state.phase === "prep") {
+          startPrep();
+        } else if (state.phase === "answer") {
+          runAnswerTimer();
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      bindGlobalEvents();
+      showEntry();
+      renderBank();
+      renderHistory();
+      iconRefresh();
+    });
+  </script>
+  <script>
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
