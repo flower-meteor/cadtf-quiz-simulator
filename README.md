@@ -2,6 +2,8 @@
 
 Static browser application for the 2026 provincial online Q&A simulation.
 
+Live site: https://flower-meteor.github.io/cadtf-quiz-simulator/
+
 ## Features
 
 - Two-question exam simulation with official timing flow
